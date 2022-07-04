@@ -7,49 +7,26 @@
 -module(mix).
 
 %% API
--export([fizzbuzz1/0, fizzbuzz2/0, pythag/1, qsort/1]).
+-export([fizzbuzz/0, pythag/1, qsort/1]).
 
 %% Tests
 -include("tests/mix_tests.erl").
 
 %% -----------------------------------------------------------------------------
-%% @doc FizzBuzz - вариант 1
+%% @doc FizzBuzz
 %% @end
 %% -----------------------------------------------------------------------------
--spec fizzbuzz1() -> Return when
+-spec fizzbuzz() -> Return when
     Return :: ok.
 
-fizzbuzz1() ->
-    [io:format("~s~n", [fizzbuzz1(N)]) || N <-lists:seq(1,100)],
-    ok.
-fizzbuzz1(N) when N rem 15 == 0 ->
-    "FizzBuzz";
-fizzbuzz1(N) when N rem 3  == 0 ->
-    "Fizz";
-fizzbuzz1(N) when N rem 5  == 0 ->
-    "Buzz";
-fizzbuzz1(N) ->
-    integer_to_list(N).
-
-%% -----------------------------------------------------------------------------
-%% @doc FizzBuzz - вариант 2
-%% @end
-%% -----------------------------------------------------------------------------
--spec fizzbuzz2() -> Return when
-    Return :: ok.
-
-fizzbuzz2() ->
-    fizzbuzz2(1).
-fizzbuzz2(N) when N =< 100 ->
-    io:format("~s~n",
+fizzbuzz() ->
+    [io:format("~s~n",
         [case {N rem 3, N rem 5} of
             {0, 0} -> "FizzBuzz";
             {0, _} -> "Fizz";
             {_, 0} -> "Buzz";
             _ -> integer_to_list(N)
-        end]),
-    fizzbuzz2(N+1);
-fizzbuzz2(_) ->
+        end]) || N <-lists:seq(1,100)],
     ok.
 
 %% -----------------------------------------------------------------------------
