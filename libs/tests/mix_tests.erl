@@ -9,6 +9,11 @@
     Arity  :: non_neg_integer(),
     Return :: [{[any()], any()}].
 
+tests(fizzbuzz, 0) ->
+    [
+    {[], ok}
+    ];
+
 tests(pythag, 1) ->
     [
     {[1],  []},
