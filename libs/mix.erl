@@ -7,30 +7,53 @@
 -module(mix).
 
 %% API
--export([fizzbuzz/0, pythag/1, qsort/1]).
+-export([fizzbuzz1/0, fizzbuzz2/0, pythag/1, qsort/1]).
 
 %% Tests
 -include("tests/mix_tests.erl").
 
 %% -----------------------------------------------------------------------------
-%% @doc FizzBuzz
+%% @doc FizzBuzz - вариант 1
 %% @end
 %% -----------------------------------------------------------------------------
--spec fizzbuzz() -> Return when
+-spec fizzbuzz1() -> Return when
     Return :: ok.
 
-fizzbuzz() ->
-    [io:format(fizzbuzz(N) ++ "\n") || N <-lists:seq(1,100)],
+fizzbuzz1() ->
+    [io:format(fizzbuzz1(N) ++ "\n") || N <-lists:seq(1,100)],
     ok.
 
-fizzbuzz(N) when N rem 15 == 0 ->
+fizzbuzz1(N) when N rem 15 == 0 ->
     "FizzBuzz";
-fizzbuzz(N) when N rem 3  == 0 ->
+fizzbuzz1(N) when N rem 3  == 0 ->
     "Fizz";
-fizzbuzz(N) when N rem 5  == 0 ->
+fizzbuzz1(N) when N rem 5  == 0 ->
     "Buzz";
-fizzbuzz(N) ->
+fizzbuzz1(N) ->
     integer_to_list(N).
+
+%% -----------------------------------------------------------------------------
+%% @doc FizzBuzz - вариант 2
+%% @end
+%% -----------------------------------------------------------------------------
+-spec fizzbuzz2() -> Return when
+    Return :: ok.
+
+fizzbuzz2() ->
+    fizzbuzz2(1).
+
+fizzbuzz2(N) when N > 100 ->
+    ok;
+fizzbuzz2(N) ->
+    Fizz = N rem 3 == 0,
+    Buzz = N rem 5 == 0,
+    io:format("~s~n", [case {Fizz, Buzz} of
+                            {true, true}  -> "FizzBuzz";
+                            {true, false} -> "Fizz";
+                            {false, true} -> "Buzz";
+                            _ -> integer_to_list(N)
+                        end]),
+    fizzbuzz2(N+1).
 
 %% -----------------------------------------------------------------------------
 %% @doc Пифагоровы тройки со сторонами треугольника не больше заданного натурального числа
