@@ -20,9 +20,8 @@
     Return :: ok.
 
 fizzbuzz1() ->
-    [io:format(fizzbuzz1(N) ++ "\n") || N <-lists:seq(1,100)],
+    [io:format("~s~n", [fizzbuzz1(N)]) || N <-lists:seq(1,100)],
     ok.
-
 fizzbuzz1(N) when N rem 15 == 0 ->
     "FizzBuzz";
 fizzbuzz1(N) when N rem 3  == 0 ->
@@ -41,19 +40,17 @@ fizzbuzz1(N) ->
 
 fizzbuzz2() ->
     fizzbuzz2(1).
-
-fizzbuzz2(N) when N > 100 ->
-    ok;
-fizzbuzz2(N) ->
-    Fizz = N rem 3 == 0,
-    Buzz = N rem 5 == 0,
-    io:format("~s~n", [case {Fizz, Buzz} of
-                            {true, true}  -> "FizzBuzz";
-                            {true, false} -> "Fizz";
-                            {false, true} -> "Buzz";
-                            _ -> integer_to_list(N)
-                        end]),
-    fizzbuzz2(N+1).
+fizzbuzz2(N) when N =< 100 ->
+    io:format("~s~n",
+        [case {N rem 3, N rem 5} of
+            {0, 0} -> "FizzBuzz";
+            {0, _} -> "Fizz";
+            {_, 0} -> "Buzz";
+            _ -> integer_to_list(N)
+        end]),
+    fizzbuzz2(N+1);
+fizzbuzz2(_) ->
+    ok.
 
 %% -----------------------------------------------------------------------------
 %% @doc Пифагоровы тройки со сторонами треугольника не больше заданного натурального числа
