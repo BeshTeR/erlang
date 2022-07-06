@@ -38,6 +38,8 @@
 [CodeRoad](https://coderoad.ru/list/?page=1&sort=view&tag=erlang)  
 [LinuxOrg](https://www.linux.org.ru/tag/erlang)  
 [ErlangForums](https://erlangforums.com/)  
+[ErlangRus](https://t.me/erlangrus)  
+
 
 **Erlang-online:**  
 [Erlang web playpen](http://tryerl.seriyps.ru/)  
