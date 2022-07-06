@@ -24,7 +24,7 @@
 ["Erlang - краткое руководство"](https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/vyuchit-erlang/erlang-kratkoe-rukovodstvo?ysclid=l33ww6nult)  
 [Дмитрий Васильев. "Язык программирования Erlang"](http://hlabs.org/development/erlang/)  
 ["Курс по Erlang/OTP на HexLet"](https://www.youtube.com/watch?v=6oVhisTplZA)  
-[Юрий Жлоба. Курс по Erlang на HexLet: "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
+[Юрий Жлоба. "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
 [Юрий Жлоба. Курс по Erlang "1. Обзор языка"](https://www.youtube.com/playlist?list=PLC1CA3DD981A8EC07)  
 [Юрий Жлоба. Курс по Erlang "2. Live Coding сессия."](https://www.youtube.com/playlist?list=PL553E473BF6FCB996)  
 [Юрий Жлоба. Курс по Erlang "3. OTP фреймворк"](https://www.youtube.com/playlist?list=PL1BCAFE11B53D354F)  
