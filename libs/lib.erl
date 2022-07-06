@@ -14,8 +14,8 @@
 
 %% -----------------------------------------------------------------------------
 %% @doc Быстрое возведение числа в степень по инвариантам:
-%% N^M = (N^(M/2))^2 - если m четно
-%% N^M = N*(N^(M-1)) - если m нечетно
+%% N^M = (N^(M/2))^2 - если M четно
+%% N^M = N*(N^(M-1)) - если M нечетно
 %% @end
 %% -----------------------------------------------------------------------------
 -spec pow(N, M) -> Return when
@@ -30,29 +30,29 @@ pow(N, M) when is_number(N), is_integer(M) ->
     end.
 
 % тело pow с аккумулятором
-pow(_, 0, Acc) ->
-    Acc;
-pow(N, M, Acc) when M rem 2 == 0 ->
-    pow(N*N, M div 2, Acc);
-pow(N, M, Acc) ->
-    pow(N, M-1, N*Acc).
+pow(_, 0, Res) ->
+    Res;
+pow(N, M, Res) when M rem 2 == 0 ->
+    pow(N*N, M div 2, Res);
+pow(N, M, Res) ->
+    pow(N, M-1, N*Res).
 
 %% -----------------------------------------------------------------------------
 %% @doc Факториал числа
 %% @end
 %% -----------------------------------------------------------------------------
--spec fac(Num) -> Return when
-    Num    :: non_neg_integer(),
+-spec fac(N) -> Return when
+    N      :: non_neg_integer(),
     Return :: pos_integer().
 
-fac(Num) when is_integer(Num), Num >=0 ->
-    fac(Num, 1).
+fac(N) when is_integer(N), N >=0 ->
+    fac(N, 1).
 
 %% тело fac с аккумулятором
-fac(0, Acc) ->
-    Acc;
-fac(N, Acc) ->
-    fac(N-1, N*Acc).
+fac(0, Res) ->
+    Res;
+fac(N, Res) ->
+    fac(N-1, N*Res).
 
 %% -----------------------------------------------------------------------------
 %% @doc Наибольший общий делитель двух целых чисел
@@ -72,13 +72,13 @@ gcd(N, M) ->
 %% @doc Знак числа
 %% @end
 %% -----------------------------------------------------------------------------
--spec sign(Num) -> Return when
-    Num    :: number(),
+-spec sign(N) -> Return when
+    N      :: number(),
     Return :: -1 | 0 | 1.
 
-sign(Num) when Num == 0 -> 0;
-sign(Num) when is_number(Num) ->
-    case Num > 0 of
+sign(N) when N == 0 -> 0;
+sign(N) when is_number(N) ->
+    case N > 0 of
         true  -> 1;
         false -> -1
     end.

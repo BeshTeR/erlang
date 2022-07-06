@@ -38,12 +38,12 @@ fizzbuzz() ->
 %% где P и Q - коэффициенты трансформации
 %% @end
 %% -----------------------------------------------------------------------------
--spec fib(Num) -> Return when
-    Num    :: non_neg_integer(),
+-spec fib(N) -> Return when
+    N      :: non_neg_integer(),
     Return :: pos_integer().
 
-fib(Num) when is_integer(Num), Num >= 0 ->
-    fib(Num, {1, 0, 0, 1}).
+fib(N) when is_integer(N), N >= 0 ->
+    fib(N, {1, 0, 0, 1}).
 
 %% тело fib с аккумулятором
 fib(0, {_, B, _, _}) ->
@@ -90,12 +90,12 @@ perms(L) ->
 %% @doc Пифагоровы тройки со сторонами треугольника не больше заданного натурального числа
 %% @end
 %% -----------------------------------------------------------------------------
--spec pythag(Num) -> Return when
-    Num    :: pos_integer(),
+-spec pythag(N) -> Return when
+    N      :: pos_integer(),
     Return :: [{pos_integer(), pos_integer(), pos_integer()}].
 
-pythag(Num) when is_integer(Num), Num > 0 ->
-    L0 = lists:seq(1, Num),
+pythag(N) when is_integer(N), N > 0 ->
+    L0 = lists:seq(1, N),
     L1 = [{A, B, C} || A <- L0, B <- L0, C <- L0, A < B, A*A+B*B == C*C],                          % формируем тройки
     L2 = [{A div G, B div G, C div G} || {A, B, C} <- L1, (G = lib:gcd(A, lib:gcd(B, C))) > 0],    % сокрашаем числа в тройках на их НОД
     F = fun(Elem, Acc) ->
@@ -110,12 +110,12 @@ pythag(Num) when is_integer(Num), Num > 0 ->
 %% @doc Быстрая сортировка
 %% @end
 %% -----------------------------------------------------------------------------
--spec qsort(List) -> Return when
-    List   :: [any()],
+-spec qsort(L) -> Return when
+    L      :: [any()],
     Return :: [any()].
 
-qsort(List) when is_list(List) ->
-    qsort(List, []).
+qsort(L) when is_list(L) ->
+    qsort(L, []).
 
 %% тело qsort с аккумулятором
 qsort([], Acc) ->
