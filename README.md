@@ -15,14 +15,14 @@
 **Документация:**  
 [Официальная документация](https://www.erlang.org/docs)  
 [Альтернативная документация](https://www.erldocs.com/)  
-[Erlang 24.0 (по русски)](https://runebook.dev/ru/docs/erlang/-index-)  
+[Erlang 24.0](https://runebook.dev/ru/docs/erlang/-index-)  
 [Шпаргалка по OTP](https://itnan.ru/post.php?c=1&p=346252)  
 
 **Обучение:**  
-[Подборка книг по Erlang/OTP (на русском)](books/)  
+[Подборка книг по Erlang/OTP на русском (pdf)](books/)  
+["Начала работы с Erlang"](https://www.rsdn.org/article/erlang/GettingStartedWithErlang.xml)  
+["Erlang - краткое руководство"](https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/vyuchit-erlang/erlang-kratkoe-rukovodstvo?ysclid=l33ww6nult)  
 [Дмитрий Васильев. "Язык программирования Erlang"](http://hlabs.org/development/erlang/)  
-[Начала работы с Erlang](https://www.rsdn.org/article/erlang/GettingStartedWithErlang.xml)  
-[Erlang - краткое руководство](https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/vyuchit-erlang/erlang-kratkoe-rukovodstvo?ysclid=l33ww6nult)  
 [Юрий Жлоба. Курс: "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
 [Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
 [Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
