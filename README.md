@@ -23,9 +23,11 @@
 ["Начала работы с Erlang"](https://www.rsdn.org/article/erlang/GettingStartedWithErlang.xml)  
 ["Erlang - краткое руководство"](https://coderlessons.com/tutorials/kompiuternoe-programmirovanie/vyuchit-erlang/erlang-kratkoe-rukovodstvo?ysclid=l33ww6nult)  
 [Дмитрий Васильев. "Язык программирования Erlang"](http://hlabs.org/development/erlang/)  
+["Курс по Erlang/OTP на HexLet"](https://www.youtube.com/watch?v=6oVhisTplZA)  
 [Юрий Жлоба. Курс: "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
 [Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
 [Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
+[Erlang Russia](https://www.youtube.com/playlist?list=PLej8-Q0wVPg2tcCCnPE7qtd5azxDuezWF)  
 
 **Форумы:**  
 [Русские блоги](https://russianblogs.com/tag/Erlang/)  
