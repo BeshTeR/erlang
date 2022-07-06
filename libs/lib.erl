@@ -13,18 +13,20 @@
 -include("tests/lib_tests.erl").
 
 %% -----------------------------------------------------------------------------
-%% @doc Вычисление целой степени числа
+%% @doc Быстрое возведение числа в степень по инвариантам:
+%% N^M = (N^(M/2))^2 - если m четно
+%% N^M = N*(N^(M-1)) - если m нечетно
 %% @end
 %% -----------------------------------------------------------------------------
--spec pow(Base, Degree) -> Return when
-    Base   :: number(),
-    Degree :: integer(),
+-spec pow(N, M) -> Return when
+    N      :: number(),
+    M      :: integer(),
     Return :: number().
 
-pow(Base, Degree) when is_number(Base), is_integer(Degree) ->
-    case Degree >= 0 of
-        true  -> pow(Base, Degree, 1);
-        false -> 1/pow(Base, -Degree, 1)
+pow(N, M) when is_number(N), is_integer(M) ->
+    case M >= 0 of
+        true  -> pow(N, M, 1);
+        false -> 1/pow(N, -M, 1)
     end.
 
 % тело pow с аккумулятором
