@@ -32,7 +32,7 @@ new(M, N) when is_integer(M), is_integer(N), M =< N ->
     List   :: [any()],
     Result :: any().
 
-elem(List) when is_list(List), List /= [] ->
+elem(List) when is_list(List), List =/= [] ->
     case List of
         [X] -> X;
         _   -> lists:nth(new(1, length(List)))

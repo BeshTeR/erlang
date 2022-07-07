@@ -48,7 +48,7 @@ fib(N) when is_integer(N), N >= 0 ->
 %% тело fib с аккумулятором
 fib(0, {_, B, _, _}) ->
     B;
-fib(N, {A, B, P, Q}) when N rem 2 == 0 ->
+fib(N, {A, B, P, Q}) when N rem 2 =:= 0 ->
     fib(N div 2, {A, B, P*P+Q*Q, 2*P*Q+Q*Q});
 fib(N, {A, B, P, Q}) ->
     fib(N-1, {B*Q+A*Q+A*P, B*P+A*Q, P, Q}).
@@ -96,7 +96,7 @@ perms(L) ->
 
 pythag(N) when is_integer(N), N > 0 ->
     L0 = lists:seq(1, N),
-    L1 = [{A, B, C} || A <- L0, B <- L0, C <- L0, A < B, A*A+B*B == C*C],                          % формируем тройки
+    L1 = [{A, B, C} || A <- L0, B <- L0, C <- L0, A < B, A*A+B*B =:= C*C],                          % формируем тройки
     L2 = [{A div G, B div G, C div G} || {A, B, C} <- L1, (G = lib:gcd(A, lib:gcd(B, C))) > 0],    % сокрашаем числа в тройках на их НОД
     F = fun(Elem, Acc) ->
             case lists:member(Elem, Acc) of

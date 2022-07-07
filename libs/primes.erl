@@ -24,15 +24,15 @@ is(N) when is_integer(N), N < 0 ->
     is(-N);
 is(N) when not is_integer(N); N < 2 ->
     false;
-is(N) when N rem 2 == 0 ->
-    N == 2;
+is(N) when N rem 2 =:= 0 ->
+    N =:= 2;
 is(N) ->
     is(N, 3).
 
 %% тело is с аккумулятором
 is(N, Acc) when Acc * Acc > N ->
     true;
-is(N, Acc) when N rem Acc == 0 ->
+is(N, Acc) when N rem Acc =:= 0 ->
     false;
 is(N, Acc) ->
     is(N, Acc+2).
@@ -49,7 +49,7 @@ less(1) ->
     no_primes;
 less(2) ->
     2;
-less(N) when N rem 2 == 0 ->
+less(N) when N rem 2 =:= 0 ->
     less(N-1);
 less(N) when is_integer(N), N > 1 ->
     case is(N) of
@@ -67,7 +67,7 @@ less(N) when is_integer(N), N > 1 ->
 
 next(N) when is_integer(N), N >= 0, N < 3 ->
     2;
-next(N) when N rem 2 == 0 ->
+next(N) when N rem 2 =:= 0 ->
     next(N+1);
 next(N) when is_integer(N) ->
     case is(N) of
@@ -89,7 +89,7 @@ list(N) when is_integer(N), N > 1 ->
     Set = ordsets:from_list(lists:seq(3, N, 2)),
     ordsets:add_element(2, sieve(N, Set, Set, ordsets:new())).
 
-sieve(_, Set1, Set2, Primes) when length(Set2) == 0 ->
+sieve(_, Set1, Set2, Primes) when length(Set2) =:= 0 ->
     ordsets:union(Primes, Set1);
 sieve(N, Set1, Set2, Primes) ->
     H = lists:nth(1,string:substr(Set1, 1, 1)),
@@ -98,7 +98,7 @@ sieve(N, Set1, Set2, Primes) ->
 
 remove_multiples_of(N, Set1, Set2) ->
     NewSet = ordsets:filter(fun(X) -> X >= N*N end, Set2),
-    R = ordsets:filter(fun(X) -> X rem N == 0 end, NewSet),
+    R = ordsets:filter(fun(X) -> X rem N =:= 0 end, NewSet),
     {ordsets:subtract(Set1, R), ordsets:subtract(NewSet, R)}.
 
 %% -----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ remove_multiples_of(N, Set1, Set2) ->
 
 twins(N) when is_integer(N) ->
     X = less(N),
-    case X == no_primes orelse X < 5 of
+    case X =:= no_primes orelse X < 5 of
         true -> no_primes;
         false ->
             case is(X-2) of
@@ -152,7 +152,7 @@ factors(N) when is_integer(N), N > 1 ->
 %% тело factors с аккумулятором
 factors(N, {M, Acc}) when M * M > N ->
     [N | Acc];
-factors(N, {M, Acc}) when N rem M == 0 ->
+factors(N, {M, Acc}) when N rem M =:= 0 ->
     factors(N div M, {M, [M | Acc]});
 factors(N, {M, Acc}) ->
     factors(N, {M+1, Acc}).

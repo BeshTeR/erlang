@@ -25,7 +25,7 @@
     Den    :: integer(),
     Return :: rational().
 
-make(Num, Den) when is_integer(Num), is_integer(Den), Den /= 0 ->
+make(Num, Den) when is_integer(Num), is_integer(Den), Den =/= 0 ->
     GCD = lib:gcd(Num, Den),
     {lib:sign(Den)*(Num div GCD), abs(Den) div GCD}.
 
@@ -210,7 +210,7 @@ is_rational(_) ->
     Return :: boolean().
 
 is_zero(R) ->
-    numerator(R) == 0.
+    numerator(R) =:= 0.
 
 %% -----------------------------------------------------------------------------
 %% @doc Число меньше нуля?
@@ -243,7 +243,7 @@ is_positiv(R) ->
     Return :: boolean().
 
 is_full(R) ->
-    denominator(R) == 1.
+    denominator(R) =:= 1.
 
 %% -----------------------------------------------------------------------------
 %% @doc Равенство двух рациональных чисел
@@ -255,7 +255,7 @@ is_full(R) ->
     Return :: boolean().
 
 equal(R1, R2) ->
-    numerator(R1)*denominator(R2) == numerator(R2)*denominator(R1).
+    numerator(R1)*denominator(R2) =:= numerator(R2)*denominator(R1).
 
 %% -----------------------------------------------------------------------------
 %% @doc Меньше?

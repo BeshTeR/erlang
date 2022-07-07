@@ -32,7 +32,7 @@ pow(N, M) when is_number(N), is_integer(M) ->
 % тело pow с аккумулятором
 pow(_, 0, Res) ->
     Res;
-pow(N, M, Res) when M rem 2 == 0 ->
+pow(N, M, Res) when M rem 2 =:= 0 ->
     pow(N*N, M div 2, Res);
 pow(N, M, Res) ->
     pow(N, M-1, N*Res).
