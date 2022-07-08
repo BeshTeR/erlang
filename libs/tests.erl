@@ -23,24 +23,19 @@
     Return :: ok.
 
 run(Mod, Fun, Arity) ->
-    ListTests = Mod:tests(Fun, Arity),
-    case ListTests of
+    case  ListTests = Mod:tests(Fun, Arity) of
         [] -> ok;
-        _  -> ListErrors = [{Args, Res, ResGood} || {Args, ResGood} <- ListTests, (Res = apply(Mod, Fun, Args)) =/= ResGood],
-              Status = case ListErrors of
-                  [] -> "ok";
-                  _  -> "error"
-              end,
-              io:format("*** test ~w is ~s~n", [Fun, Status]),
-              print_err(ListErrors)
+        _ ->
+            ListErrors = [{Args, Res, ResGood} || {Args, ResGood} <- ListTests, (Res = apply(Mod, Fun, Args)) =/= ResGood],
+            io:format("*** test ~w is ", [Fun]),
+            case ListErrors of
+                [] ->
+                    io:format("ok~n");
+                _ ->
+                    io:format("error~n"),
+                    [io:format("~w~w \t--> ~w~ncorrect --> ~w~n", [Fun, Args, Res, ResGood]) || {Args, Res, ResGood} <- ListErrors]
+            end
     end.
-
-%% вывод списка ошибок
-print_err([]) ->
-    ok;
-print_err([{Args, Res, ResGood} | T]) ->
-    io:format("~w \t--> ~w~ncorrect --> ~w~n", [Args, Res, ResGood]),
-    print_err(T).
 
 %% -----------------------------------------------------------------------------
 %% @doc Тестирование модуля
@@ -51,14 +46,8 @@ print_err([{Args, Res, ResGood} | T]) ->
     Return :: ok.
 
 run(Mod) ->
-    for_all(Mod, Mod:module_info(exports)).
-
-%% выполняем тесты для всех функций Mod:Fun/Arity
-for_all(_, []) ->
-    ok;
-for_all(Mod, [{Fun, Arity} | T]) ->
-    run(Mod, Fun, Arity),
-    for_all(Mod, T).
+    [run(Mod, Fun, Arity) || {Fun, Arity} <- Mod:module_info(exports)],
+    ok.
 
 %% -----------------------------------------------------------------------------
 %% @doc Среднее время применения функции по нескольким испытаниям (микросекунд):
