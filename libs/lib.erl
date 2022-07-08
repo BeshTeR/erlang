@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0]).
+-export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0, for/4, for/3, for/2]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -131,3 +131,42 @@ flush() ->
     after
         0 -> ok
     end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Цикл for от M до N с шагом S
+%% @end
+%% -----------------------------------------------------------------------------
+-spec for(M, N, S, F) -> Return when
+    M      :: integer(),
+    N      :: integer(),
+    S      :: integer(),
+    F      :: fun(),
+    Return :: any().
+
+for(M, N, S, F) ->
+    [F(X) || X <- lists:seq(M, N, S)].
+
+%% -----------------------------------------------------------------------------
+%% @doc Цикл for от M до N с шагом 1
+%% @end
+%% -----------------------------------------------------------------------------
+-spec for(M, N, F) -> Return when
+    M      :: integer(),
+    N      :: integer(),
+    F      :: fun(),
+    Return :: any().
+
+for(M, N, F) ->
+    for(M, N, 1, F).
+
+%% -----------------------------------------------------------------------------
+%% @doc Цикл for от 1 до N с шагом 1
+%% @end
+%% -----------------------------------------------------------------------------
+-spec for(N, F) -> Return when
+    N      :: integer(),
+    F      :: fun(),
+    Return :: any().
+
+for(N, F) ->
+    for(1, N, 1, F).
