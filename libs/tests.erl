@@ -75,10 +75,16 @@ for_all(Mod, [{Fun, Arity} | T]) ->
 tc(Mod, Fun, Args, N) when is_integer(N), N > 0 ->
     statistics(runtime),
     statistics(wall_clock),
-    lib:for(N, fun(_) -> apply(Mod, Fun, Args) end),
+    tc({Mod, Fun, Args}, N),
     {_, T1} = statistics(runtime),
     {_, T2} = statistics(wall_clock),
     {T1*1000/N, T2*1000/N}.
+
+tc(_, 0) ->
+    ok;
+tc({M, F, Args}, N) ->
+    apply(M, F, Args),
+    tc({M, F, Args}, N-1).
 
 %% -----------------------------------------------------------------------------
 %% @doc Сравнение скорости работы списка функций на одинаковых аргументах
