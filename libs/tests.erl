@@ -61,57 +61,42 @@ for_all(Mod, [{Fun, Arity} | T]) ->
     for_all(Mod, T).
 
 %% -----------------------------------------------------------------------------
-%% @doc Среднее время применения функции по нескольким испытаниям (микросекунд)
+%% @doc Среднее время применения функции по нескольким испытаниям (микросекунд):
+%% {T1, T2}, где T1 - процессорное время, T2 - время по часам
 %% @end
 %% -----------------------------------------------------------------------------
--spec tc(Mod, Fun, Args, Num) -> Return when
+-spec tc(Mod, Fun, Args, N) -> Return when
     Mod    :: atom(),
     Fun    :: atom(),
     Args   :: [any()],
-    Num    :: pos_integer(),
-    Return :: float().
+    N      :: pos_integer(),
+    Return :: {float(), float()}.
 
-tc(Mod, Fun, Args, Num) when is_integer(Num), Num > 0 ->
-    tc(Mod, Fun, Args, Num, 0)/Num.
-
-%% тело tc с аккумулятором
-tc(_, _, _, 0, Acc) ->
-    Acc;
-tc(Mod, Fun, Args, Num, Acc) ->
-    tc(Mod, Fun, Args, Num-1, Acc+time_call(Mod, Fun, Args)).
-
-%% время одного вызова Mod:Fun(Args)
-time_call(Mod, Fun, Args) ->
-    StartTime = erlang:system_time(microsecond),
-    apply(Mod, Fun, Args),
-    erlang:system_time(microsecond)-StartTime.
+tc(Mod, Fun, Args, N) when is_integer(N), N > 0 ->
+    statistics(runtime),
+    statistics(wall_clock),
+    lib:for(N, fun(_) -> apply(Mod, Fun, Args) end),
+    {_, T1} = statistics(runtime),
+    {_, T2} = statistics(wall_clock),
+    {T1*1000/N, T2*1000/N}.
 
 %% -----------------------------------------------------------------------------
 %% @doc Сравнение скорости работы списка функций на одинаковых аргументах
 %% @end
 %% -----------------------------------------------------------------------------
--spec fast(Funs, Args, Num) -> Return when
+-spec fast(Funs, Args, N) -> Return when
     Funs   :: [{atom(),atom()}],
     Args   :: [any()],
-    Num    :: pos_integer(),
-    Return :: ok | {error, no_functions | one_function}.
+    N      :: pos_integer(),
+    Return :: [ok] | {error, no_functions | one_function}.
 
 fast([], _, _)  ->
     {error, no_functions};
 fast([_], _, _) ->
     {error, one_function};
-fast(Funs, Args, Num) when Num > 0 ->
-    FunOrder = fun({_, A}, {_, B}) -> A < B end,
-    NoSortRes = [{{Mod, Fun}, tc(Mod, Fun, Args, Num)} || {Mod, Fun} <- Funs],
-    ResList = [{_, Min}|_] = lists:sort(FunOrder, NoSortRes),
-    print_res(ResList, Min).
-
-%% вывод результатов тестирования
-print_res([], _) ->
-    ok;
-print_res([{{Mod, Fun}, TotalTime} | T], Min) ->
-    io:format("~s:~s \t==> ~.2f~n", [Mod, Fun, TotalTime/Min]),
-    print_res(T, Min).
+fast(Funs, Args, N) when N > 0 ->
+    [io:format("~s:~s \t==> ~.2f mks (~.2f mks)~n", [M, F, T1, T2]) ||
+    {{M, F}, {T1, T2}} <- lists:sort(fun({_,{A,_}},{_,{B,_}}) -> A < B end, [{{M, F}, tc(M, F, Args, N)} || {M, F} <- Funs])].
 
 %% -----------------------------------------------------------------------------
 %% @doc Запуск мониторинга системы
