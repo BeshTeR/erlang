@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0, sleep/1, for/4, for/3, for/2]).
+-export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0, sleep/1, on_exit/2, for/4, for/3, for/2]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -144,6 +144,26 @@ sleep(T) when is_integer(T), T >= 0 ->
     receive
         after T -> ok
     end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Обработчик завершения процесса
+%% Если процесс Pid умирает с причиной Why, то вычисляется функция F(Why)
+%% @end
+%% -----------------------------------------------------------------------------
+-spec on_exit(Pid, F) -> Return when
+    Pid    :: pid(),
+    F      :: fun(),
+    Return :: any().
+
+on_exit(Pid, F) ->
+    spawn(
+        fun() ->
+            process_flag(trap_exit, true),
+            link(Pid),
+            receive
+                {'EXIT', Pid, Why} -> F(Why)
+            end
+        end).
 
 %% -----------------------------------------------------------------------------
 %% @doc Цикл for от M до N с шагом S
