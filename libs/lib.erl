@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0, for/4, for/3, for/2]).
+-export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0, sleep/1, for/4, for/3, for/2]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -130,6 +130,19 @@ flush() ->
         _ -> flush()
     after
         0 -> ok
+    end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Остановка текущего процесса на T миллисекунд
+%% @end
+%% -----------------------------------------------------------------------------
+-spec sleep(T) -> Return when
+    T      :: non_neg_integer,
+    Return :: ok.
+
+sleep(T) when is_integer(T), T >= 0 ->
+    receive
+        after T -> ok
     end.
 
 %% -----------------------------------------------------------------------------
