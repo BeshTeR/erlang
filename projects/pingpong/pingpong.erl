@@ -56,7 +56,6 @@ start2(N) ->
 loop(0) ->
     unregister(ping),
     unregister(pong);
-
 loop(N) ->
     {In, Out, D} =
     receive
