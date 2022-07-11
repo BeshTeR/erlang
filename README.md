@@ -12,7 +12,7 @@
 |*rpn*     |[Вычислитель выражений в обратной польской записи](doc/rpn.md)                |  
 |*event*   |[Персональный планировщик](doc/event.md)                                      |  
 |*chain*   |[Кольцевой тест](doc/chain.md)                                                |  
-|*pingpong*|[PingPong с одним loop и передачей состояния через сообщения](doc/pingpong.md)|  
+|*pingpong*|[PingPong с одним loop](doc/pingpong.md)|  
 |*mix*     |[Реализация различных алгоритмов](doc/mix.md)                                 |  
 
 ## Материалы по Erlang/OTP  
