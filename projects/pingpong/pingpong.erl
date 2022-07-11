@@ -21,10 +21,10 @@
     N      :: integer(),
     Return :: ok.
 start1(N) ->
-    spawn(fun loop1/0) ! {self(), {ping, N}},
-    loop1().
+    spawn(fun loop/0) ! {self(), {ping, N}},
+    loop().
 
-loop1() ->
+loop() ->
     receive
         {From, {_, 0}} ->
             From ! {self(), {stop, 0}},
@@ -36,7 +36,7 @@ loop1() ->
                     ping -> {pong, N};
                     pong -> {ping, N-1}
                 end},
-            loop1()
+            loop()
     end.
 
 %% -----------------------------------------------------------------------------
@@ -48,17 +48,16 @@ loop1() ->
     Return :: ok.
 start2(0) -> ok;
 start2(N) ->
-    register(ping, spawn(fun() -> loop2(N) end)),
-    register(pong, spawn(fun() -> loop2(N) end)),
+    register(ping, spawn(fun() -> loop(N) end)),
+    register(pong, spawn(fun() -> loop(N) end)),
     pong ! ping,
     ok.
 
-loop2(0) ->
+loop(0) ->
     unregister(ping),
-    unregister(pong),
-    ok;
+    unregister(pong);
 
-loop2(N) ->
+loop(N) ->
     {In, Out, D} =
     receive
         ping -> {ping, pong, 1};
@@ -66,4 +65,4 @@ loop2(N) ->
     end,
     In ! Out,
     io:format("~w --> ~w --> ~w~n", [whereis(In), In, whereis(Out)]),
-    loop2(N-D).
+    loop(N-D).

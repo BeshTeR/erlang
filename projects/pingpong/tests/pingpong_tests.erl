@@ -17,7 +17,7 @@ tests(start1, 1) ->
 tests(start2, 1) ->
     [
     {[0], ok},
-    {[5], ok}
+    {[4], ok}
     ];
 
 tests(_, _) ->
