@@ -20,6 +20,7 @@
 -spec start1(N) -> Return when
     N      :: integer(),
     Return :: ok.
+
 start1(N) ->
     spawn(fun loop/0) ! {self(), {ping, N}},
     loop().
@@ -46,6 +47,7 @@ loop() ->
 -spec start2(N) -> Return when
     N      :: integer(),
     Return :: ok.
+
 start2(0) -> ok;
 start2(N) ->
     register(ping, spawn(fun() -> loop(N) end)),
