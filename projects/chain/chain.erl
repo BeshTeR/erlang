@@ -30,7 +30,7 @@ loop(I, Pid) ->
         0 -> ok;
         N ->
             Pid ! N-1,
-            io:format("from ~w to ~w --> ~w~n", [self(), Pid, N]),
+            io:format("from ~-9w to ~-9w --> ~w~n", [self(), Pid, N]),
             loop(I, Pid)
     end.
 

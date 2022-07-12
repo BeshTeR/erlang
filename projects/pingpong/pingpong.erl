@@ -30,7 +30,7 @@ loop() ->
             From ! {self(), {stop, 0}},
             ok;
         {From, {Msg, N}} ->
-            io:format("~w --> ~w --> ~w~n", [From, Msg, self()]),
+            io:format("~-9w --> ~w --> ~w~n", [From, Msg, self()]),
             From ! {self(),
                 case Msg of
                     ping -> {pong, N};
@@ -63,5 +63,5 @@ loop(N) ->
         pong -> {pong, ping, 0}
     end,
     In ! Out,
-    io:format("~w --> ~w --> ~w~n", [whereis(In), In, whereis(Out)]),
+    io:format("~-9w --> ~w --> ~w~n", [whereis(In), In, whereis(Out)]),
     loop(N-D).
