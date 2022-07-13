@@ -72,8 +72,8 @@ list(M, N) when is_integer(M), is_integer(N), M >= 0, N >= 0 ->
 num(K) when is_integer(K), K > 0 ->
     lists:foldl(
         fun(A, B) -> A+10*B end,
-        0,
-        [elem(lists:seq(1,9)) | [digit() || _ <- lists:seq(1,K-1)]]).
+        elem(lists:seq(1,9)),
+        [digit() || _ <- lists:seq(1,K-1)]).
 
 %% -----------------------------------------------------------------------------
 %% @doc Случайная десятичная цифра
