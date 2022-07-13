@@ -7,7 +7,7 @@
 -module(rnd).
 
 %% API
--export([new/1, new/2, elem/1, list/2, digit/0, num/1, bool/0, bit/0, byte/0]).
+-export([new/1, new/2, elem/1, list/2, digit/0, num/1, bool/0, bit/0, byte/0, bitstring/1]).
 
 %% Tests
 -include("tests/rnd_tests.erl").
@@ -50,7 +50,7 @@ elem(L) when is_list(L), L =/= [] ->
     end.
 
 %% -----------------------------------------------------------------------------
-%% @doc Список M случайных чисел, из диапазона 1 .. N
+%% @doc Список M случайных чисел, из диапазона 0 .. N
 %% @end
 %% -----------------------------------------------------------------------------
 -spec list(M, N) -> Result when
@@ -102,7 +102,7 @@ bool() ->
 %% @end
 %% -----------------------------------------------------------------------------
 -spec bit() -> Result when
-    Result :: boolean().
+    Result :: 0 | 1.
 
 bit() ->
     round(rand:uniform()).
@@ -112,7 +112,18 @@ bit() ->
 %% @end
 %% -----------------------------------------------------------------------------
 -spec byte() -> Result when
-    Result :: boolean().
+    Result :: pos_integer().
 
 byte() ->
     new(256).
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайная битовая строка длиной N байт
+%% @end
+%% -----------------------------------------------------------------------------
+-spec bitstring(N) -> Result when
+    N      :: pos_integer(),
+    Result :: bitstring().
+
+bitstring(N) ->
+    list_to_bitstring([ byte() || _ <- lists:seq(1, N)]).
