@@ -67,7 +67,7 @@ list(M, N) when is_integer(M), is_integer(N), M >= 0, N > 0 ->
 %% -----------------------------------------------------------------------------
 -spec num(K) -> Result when
     K      :: pos_integer(),
-    Result :: pos_integer().
+    Result :: non_neg_integer().
 
 num(K) when is_integer(K), K > 0 ->
     lists:foldl(
