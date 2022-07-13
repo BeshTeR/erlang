@@ -7,7 +7,7 @@
 -module(rnd).
 
 %% API
--export([new/1, new/2, elem/1, list/2, digit/0, num/1, bool/0]).
+-export([new/1, new/2, elem/1, list/2, digit/0, num/1, bool/0, bit/0, byte/0]).
 
 %% Tests
 -include("tests/rnd_tests.erl").
@@ -94,3 +94,23 @@ digit() ->
 
 bool() ->
     rand:uniform() > 0.5.
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайный бит
+%% @end
+%% -----------------------------------------------------------------------------
+-spec bit() -> Result when
+    Result :: boolean().
+
+bit() ->
+    round(rand:uniform()).
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайный байт
+%% @end
+%% -----------------------------------------------------------------------------
+-spec byte() -> Result when
+    Result :: boolean().
+
+byte() ->
+    new(256).
