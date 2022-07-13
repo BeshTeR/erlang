@@ -8,20 +8,39 @@
 -module(pingpong).
 
 %% API
--export([start1/1, start2/1]).
+-export([start1/1, start2/1, start3/1]).
 
-%% Tests
--include("tests/pingpong_tests.erl").
 
 %% -----------------------------------------------------------------------------
-%% @doc Вариант 1: передача состояния через сообщения
+%% @doc Вариант 1: отдельные функции для ping и pong
 %% @end
 %% -----------------------------------------------------------------------------
--spec start1(N) -> Return when
-    N      :: integer(),
-    Return :: ok.
-
 start1(N) ->
+    spawn(fun() -> pong(spawn(fun ping/0), N) end),
+    ok.
+
+pong(Pid, 0) -> Pid ! stop;
+pong(Pid, N) ->
+    Pid ! {pong, self()},
+    receive
+        ping -> out(self(), pong, Pid)
+    end,
+    pong(Pid, N-1).
+
+ping() ->
+    receive
+        stop -> ok;
+        {pong, Pid} ->
+            out(self(), ping, Pid),
+            Pid ! ping,
+            ping()
+    end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Вариант 2: один loop, передача стейта через сообщения
+%% @end
+%% -----------------------------------------------------------------------------
+start2(N) ->
     spawn(fun loop/0) ! {self(), {ping, N}},
     loop().
 
@@ -41,15 +60,11 @@ loop() ->
     end.
 
 %% -----------------------------------------------------------------------------
-%% @doc Вариант 2: передача состояния через loop и регистрация процессов
+%% @doc Вариант 3: один loop, передача стейта через loop, регистрация процессов
 %% @end
 %% -----------------------------------------------------------------------------
--spec start2(N) -> Return when
-    N      :: integer(),
-    Return :: ok.
-
-start2(0) -> ok;
-start2(N) ->
+start3(0) -> ok;
+start3(N) ->
     register(ping, spawn(fun() -> loop(N) end)),
     register(pong, spawn(fun() -> loop(N) end)),
     pong ! ping,
