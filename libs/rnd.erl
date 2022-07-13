@@ -126,4 +126,4 @@ byte() ->
     Result :: bitstring().
 
 bitstring(N) ->
-    list_to_bitstring([ byte() || _ <- lists:seq(1, N)]).
+   << <<(byte())>> || _ <- lists:seq(1, N)>>.
