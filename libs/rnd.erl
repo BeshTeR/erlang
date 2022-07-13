@@ -69,7 +69,9 @@ list(M, N) when is_integer(M), is_integer(N), M >= 0, N >= 0 ->
     K      :: pos_integer(),
     Result :: non_neg_integer().
 
-num(K) when is_integer(K), K > 0 ->
+num(1) ->
+    digit();
+num(K) when is_integer(K), K > 1 ->
     lists:foldl(
         fun(A, B) -> A+10*B end,
         elem(lists:seq(1,9)),
