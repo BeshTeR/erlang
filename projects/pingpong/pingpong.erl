@@ -18,7 +18,8 @@ start1(N) ->
     spawn(fun() -> ping(spawn(fun pong/0), N) end),
     ok.
 
-ping(Pid, 0) -> Pid ! stop;
+ping(Pid, 0) ->
+    exit(Pid);
 ping(Pid, N) ->
     Pid ! {ping, self()},
     receive
@@ -28,7 +29,6 @@ ping(Pid, N) ->
 
 pong() ->
     receive
-        stop -> ok;
         {ping, Pid} ->
             out(Pid, ping, self()),
             Pid ! pong,
