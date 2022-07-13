@@ -4,7 +4,7 @@
 |*lib*          |[Часто используемые функции](doc/lib.md)          |  
 |*primes*       |[Простые числа](doc/primes.md)                    |  
 |*combinatorics*|[Комбинаторика](doc/combinatorics.md)             |  
-|*rnd*          |[Случайные числа](doc/rnd.md)                     |  
+|*rnd*          |[Случайные величины](doc/rnd.md)                     |  
 |*rat*          |[Рациональные числа](doc/rat.md)                  |  
 |*tests*        |[Модуль для проведения тестирования](doc/tests.md)|  
 
