@@ -55,11 +55,11 @@ elem(L) when is_list(L), L =/= [] ->
 %% -----------------------------------------------------------------------------
 -spec list(M, N) -> Result when
     M      :: non_neg_integer(),
-    N      :: pos_integer(),
+    N      :: non_neg_integer(),
     Result :: [pos_integer()].
 
-list(M, N) when is_integer(M), is_integer(N), M >= 0, N > 0 ->
-    [new(1, N) || _ <- lists:seq(1, M)].
+list(M, N) when is_integer(M), is_integer(N), M >= 0, N >= 0 ->
+    [new(N) || _ <- lists:seq(1, M)].
 
 %% -----------------------------------------------------------------------------
 %% @doc Случайное K-значное число
