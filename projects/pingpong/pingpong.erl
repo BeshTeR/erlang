@@ -15,24 +15,24 @@
 %% @end
 %% -----------------------------------------------------------------------------
 start1(N) ->
-    spawn(fun() -> pong(spawn(fun ping/0), N) end),
+    spawn(fun() -> ping(spawn(fun pong/0), N) end),
     ok.
 
-pong(Pid, 0) -> Pid ! stop;
-pong(Pid, N) ->
-    Pid ! {pong, self()},
+ping(Pid, 0) -> Pid ! stop;
+ping(Pid, N) ->
+    Pid ! {ping, self()},
     receive
-        ping -> out(self(), pong, Pid)
+        pong -> out(Pid, pong, self())
     end,
-    pong(Pid, N-1).
+    ping(Pid, N-1).
 
-ping() ->
+pong() ->
     receive
         stop -> ok;
-        {pong, Pid} ->
-            out(self(), ping, Pid),
-            Pid ! ping,
-            ping()
+        {ping, Pid} ->
+            out(Pid, ping, self()),
+            Pid ! pong,
+            pong()
     end.
 
 %% -----------------------------------------------------------------------------
