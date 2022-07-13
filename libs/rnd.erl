@@ -7,10 +7,21 @@
 -module(rnd).
 
 %% API
--export([new/2, elem/1, list/2]).
+-export([new/1, new/2, elem/1, list/2, digit/0, num/1, bool/0]).
 
 %% Tests
 -include("tests/rnd_tests.erl").
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайное натуральное число не превосходящее заданного
+%% @end
+%% -----------------------------------------------------------------------------
+-spec new(N) -> Result when
+    N      :: non_neg_integer(),
+    Result :: non_neg_integer().
+
+new(N) when is_integer(N), N >= 0 ->
+    round(N*rand:uniform()).
 
 %% -----------------------------------------------------------------------------
 %% @doc Случайное целое число из заданного диапазона
@@ -28,14 +39,14 @@ new(M, N) when is_integer(M), is_integer(N), M =< N ->
 %% @doc Случайный элемент непустого списка
 %% @end
 %% -----------------------------------------------------------------------------
--spec elem(List) -> Result when
-    List   :: [any()],
+-spec elem(L) -> Result when
+    L      :: [any()],
     Result :: any().
 
-elem(List) when is_list(List), List =/= [] ->
-    case List of
+elem(L) when is_list(L), L =/= [] ->
+    case L of
         [X] -> X;
-        _   -> lists:nth(new(1, length(List)))
+        _   -> lists:nth(new(1, length(L)), L)
     end.
 
 %% -----------------------------------------------------------------------------
@@ -49,3 +60,37 @@ elem(List) when is_list(List), List =/= [] ->
 
 list(M, N) when is_integer(M), is_integer(N), M >= 0, N > 0 ->
     [new(1, N) || _ <- lists:seq(1, M)].
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайное K-значное число
+%% @end
+%% -----------------------------------------------------------------------------
+-spec num(K) -> Result when
+    K      :: pos_integer(),
+    Result :: pos_integer().
+
+num(K) when is_integer(K), K > 0 ->
+    lists:foldl(
+        fun(A, B) -> A+10*B end,
+        0,
+        [elem(lists:seq(1,9)) | [digit() || _ <- lists:seq(1,K-1)]]).
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайная десятичная цифра
+%% @end
+%% -----------------------------------------------------------------------------
+-spec digit() -> Result when
+    Result :: non_neg_integer().
+
+digit() ->
+    trunc(10*rand:uniform()).
+
+%% -----------------------------------------------------------------------------
+%% @doc Случайное булево значение
+%% @end
+%% -----------------------------------------------------------------------------
+-spec bool() -> Result when
+    Result :: boolean().
+
+bool() ->
+    rand:uniform() > 0.5.
