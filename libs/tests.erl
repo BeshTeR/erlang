@@ -27,7 +27,7 @@ run(Mod, Fun, Arity) ->
         [] -> ok;
         _ ->
             ListErrors = [{Args, Res, ResGood} || {Args, ResGood} <- ListTests, (Res = apply(Mod, Fun, Args)) =/= ResGood],
-            io:format("*** test ~w is ", [Fun]),
+            io:format("*** test ~w/~w is ", [Fun, Arity]),
             case ListErrors of
                 [] ->
                     io:format("ok~n");
