@@ -67,7 +67,7 @@ tc(Mod, Fun, Args, N) when is_integer(N), N > 0 ->
     tc({Mod, Fun, Args}, N),
     {_, T1} = statistics(runtime),
     {_, T2} = statistics(wall_clock),
-    {T1*1000/N, T2*1000/N}.
+    {T1/N, T2/N}.
 
 tc(_, 0) ->
     ok;
