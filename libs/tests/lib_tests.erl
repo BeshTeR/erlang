@@ -87,17 +87,6 @@ tests(pmap, 2) ->
     {[fun(X) -> X*X end, [1,2,3]], [1,4,9]}
     ];
 
-tests(filter, 2) ->
-    [
-    {[fun(_) -> false end, [1,2,3]], []},
-    {[fun(_) -> true end, [1,2,3]], [1,2,3]},
-    {[fun(X) -> X rem 2 /= 0 end, []], []},
-    {[fun(X) -> X rem 2 /= 0 end, [5]], [5]},
-    {[fun(X) -> X rem 2 /= 0 end, [1,2,3]], [1,3]},
-    {[fun(X) -> X rem 2 == 0 end, [5]], []},
-    {[fun(X) -> X rem 2 == 0 end, [1,2,3]], [2]}
-    ];
-
 tests(for, 4) ->
     [
     {[2,1,2, fun id/1], []},

@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, id/1, pmap/2, filter/2, flush/0, sleep/1, on_exit/2, for/4, for/3, for/2]).
+-export([gcd/2, sign/1, pow/2, fac/1, id/1, pmap/2, flush/0, sleep/1, on_exit/2, for/4, for/3, for/2]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -121,18 +121,6 @@ pmap(F, L) ->
         [receive
              {Pid, Res} -> {Pid, Res}
          end || _ <- lists:seq(1, length(L))])].
-
-%% -----------------------------------------------------------------------------
-%% @doc Фильтрация списка по условию
-%% @end
-%% -----------------------------------------------------------------------------
--spec filter(P, L) -> Return when
-    P      :: fun(),
-    L      :: [any()],
-    Return :: [any()].
-
-filter(P, L) ->
-    [X || X <- L, P(X)].
 
 %% -----------------------------------------------------------------------------
 %% @doc Очистка очереди сообщений текущего процесса
