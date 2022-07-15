@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, id/1, map/2, filter/2, flush/0, sleep/1, on_exit/2, for/4, for/3, for/2]).
+-export([gcd/2, sign/1, pow/2, fac/1, id/1, pmap/2, filter/2, flush/0, sleep/1, on_exit/2, for/4, for/3, for/2]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -97,15 +97,15 @@ id(Term) ->
 
 %% -----------------------------------------------------------------------------
 %% @doc Применить функцию F параллельно ко всем элементам списка L (параллельный аналог lists:map/2).
-%% При "легкой" F быстрее работает lists:map/2, но при "тяжелой" F быстрее работает уже lib:map/2.
+%% При "легкой" F быстрее работает lists:map/2, но при "тяжелой" F быстрее работает уже lib:pmap/2.
 %% @end
 %% -----------------------------------------------------------------------------
--spec map(F, L) -> Return when
+-spec pmap(F, L) -> Return when
     F      :: fun(),
     L      :: [any()],
     Return :: [any()].
 
-map(F, L) ->
+pmap(F, L) ->
     %% Запускаем процессы вычисления функции
     [spawn(
         fun() ->

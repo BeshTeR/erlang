@@ -77,7 +77,7 @@ tests(id, 1) ->
     {[atom],              atom}
     ];
 
-tests(map, 2) ->
+tests(pmap, 2) ->
     [
     {[fun id/1, [1,2,3]], [1,2,3]},
     {[fun(_) -> 1 end, [1,2,3]], [1,1,1]},

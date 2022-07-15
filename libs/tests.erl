@@ -90,7 +90,7 @@ fast([], _, _)  ->
 fast([_], _, _) ->
     {error, one_function};
 fast(Funs, Args, N) when N > 0 ->
-    [io:format("~s:~s \t==> ~.2f mks (~.2f mks)~n", [M, F, T1, T2]) ||
+    [io:format("~s:~s/~w \t==> ~.2f mks (~.2f mks)~n", [M, F, length(Args), T1, T2]) ||
     {{M, F}, {T1, T2}} <- lists:sort(fun({_,{A,_}},{_,{B,_}}) -> A < B end, [{{M, F}, tc(M, F, Args, N)} || {M, F} <- Funs])].
 
 %% -----------------------------------------------------------------------------
