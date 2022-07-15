@@ -105,12 +105,14 @@ id(Term) ->
     Return :: [any()].
 
 map(F, L) ->
+    %% Запускаем процессы вычисления функции
     [spawn(
         fun() ->
             receive
                 {Pid, F, X} -> Pid ! {self(), F(X)}
             end
         end) ! {self(), F, X}|| X <- L],
+    %% Собираем результаты вычислений в список
     [X || {_,X} <- lists:sort(
         fun({A,_}, {B,_}) ->
             A < B
