@@ -111,14 +111,13 @@ map(F, L) ->
                 {Pid, F, X} -> Pid ! {self(), F(X)}
             end
         end) ! {self(), F, X}|| X <- L],
-    map_loop(length(L), []).
-
-map_loop(0, Acc) ->
-    [X || {_,X} <- lists:sort(fun({A,_}, {B,_}) -> A < B end, Acc)];
-map_loop(N, Acc) ->
-    receive
-        {Pid, Res} -> map_loop(N-1, [{Pid, Res} | Acc])
-    end.
+    [X || {_,X} <- lists:sort(
+        fun({A,_}, {B,_}) ->
+            A < B
+        end,
+        [receive
+             {Pid, Res} -> {Pid, Res}
+         end || _ <- lists:seq(1, length(L))])].
 
 %% -----------------------------------------------------------------------------
 %% @doc Фильтрация списка по условию
