@@ -39,6 +39,7 @@
 [Юрий Жлоба. Курс по Erlang "3. OTP фреймворк"](https://www.youtube.com/playlist?list=PL1BCAFE11B53D354F)  
 [Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
 [Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
+[Борис Бочкарев. Erlang](https://www.youtube.com/watch?v=5sOBwY2bTLY&list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
 [Erlang Russia](https://www.youtube.com/playlist?list=PLej8-Q0wVPg2tcCCnPE7qtd5azxDuezWF)  
 
 **Форумы:**  
