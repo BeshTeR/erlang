@@ -40,7 +40,7 @@
 [Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
 [Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
 [Борис Бочкарев "Erlang"](https://www.youtube.com/playlist?list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
-[Евгений Батогов "Введение в платформу Erlang/OTP и Elixir"](https://www.youtube.com/watch?v=MF8E3ij3IRI)  
+[Евгений Батогин "Введение в платформу Erlang/OTP и Elixir"](https://www.youtube.com/watch?v=MF8E3ij3IRI)  
 [Erlang Russia](https://www.youtube.com/playlist?list=PLej8-Q0wVPg2tcCCnPE7qtd5azxDuezWF)  
 
 **Форумы:**  
