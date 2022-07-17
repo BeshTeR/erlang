@@ -45,7 +45,7 @@ pow(N, M, Res) ->
     N      :: non_neg_integer(),
     Return :: pos_integer().
 
-fac(N) when is_integer(N), N >=0 ->
+fac(N) when is_integer(N), N >= 0 ->
     fac(N, 1).
 
 %% тело fac с аккумулятором
