@@ -93,5 +93,34 @@ tests(sleep, 1) ->
     {[10], ok}
     ];
 
+tests(type_of, 1) ->
+    [
+    {[true],                        boolean},
+    {[false],                       boolean},
+    {[erlang],                      atom},
+    {['Erlang lang'],               atom},
+    {[0],                           integer},
+    {[-10],                         integer},
+    {[10],                          integer},
+    {[0.0],                         real},
+    {[-10.1e-2],                    real},
+    {[[]],                          list},
+    {[[1, {}]],                     list},
+    {[[{1,2}]],                     list},
+    {[{}],                          tuple},
+    {[{[]}],                        tuple},
+    {[#{key => value}],             map},
+    {[#{}],                         map},
+    {[self()],                      pid},
+    {[fun lib:id/0],                function},
+    {[fun() -> ok end],             function},
+    {[make_ref()],                  reference},
+    {[list_to_binary("erlang")],    binary},
+    {[<<"">>],                      binary},
+    {[<<123, 321, 213>>],           binary},
+    {[<<>>],                        binary},
+    {[begin {_, X} = gen_udp:open(0, []), X end], port}
+    ];
+
 tests(_, _) ->
     [].
