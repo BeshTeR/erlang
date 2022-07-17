@@ -25,9 +25,8 @@
     Return :: number().
 
 pow(N, M) when is_number(N), is_integer(M) ->
-    case M >= 0 of
-        true  -> pow(N, M, 1);
-        false -> 1/pow(N, -M, 1)
+    if M >= 0 -> pow(N, M, 1);
+        true -> 1/pow(N, -M, 1)
     end.
 
 % тело pow с аккумулятором
@@ -64,10 +63,8 @@ fac(N, Res) ->
     M      :: integer(),
     Return :: pos_integer().
 
-gcd(N, 0) ->
-    abs(N);
-gcd(N, M) ->
-    gcd(M, N rem M).
+gcd(N, 0) -> abs(N);
+gcd(N, M) -> gcd(M, N rem M).
 
 %% -----------------------------------------------------------------------------
 %% @doc Знак числа
@@ -77,11 +74,10 @@ gcd(N, M) ->
     N      :: number(),
     Return :: -1 | 0 | 1.
 
-sign(N) when N == 0 -> 0;
+sign(N) when N == 0 -> 0;       %% матчится 0 и 0.0
 sign(N) when is_number(N) ->
-    case N > 0 of
-        true  -> 1;
-        false -> -1
+    if N > 0 -> 1;
+        true -> -1
     end.
 
 %% -----------------------------------------------------------------------------
@@ -92,8 +88,7 @@ sign(N) when is_number(N) ->
     Term   :: any(),
     Return :: any().
 
-id(Term) ->
-    Term.
+id(Term) -> Term.
 
 %% -----------------------------------------------------------------------------
 %% @doc Применить функцию F параллельно ко всем элементам списка L (параллельный аналог lists:map/2).
@@ -132,8 +127,7 @@ pmap(F, L) ->
 flush() ->
     receive
         _ -> flush()
-    after
-        0 -> ok
+        after 0 -> ok
     end.
 
 %% -----------------------------------------------------------------------------
