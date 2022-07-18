@@ -7,10 +7,10 @@
 -module(clock).
 
 %% API
--export([call/3, stop/1, sleep/1]).
+-export([start/3, stop/1, sleep/1]).
 
 %% -----------------------------------------------------------------------------
-%% @doc Периодические запуски функции F() через интервалы в T миллисекунд
+%% @doc Периодические запуски функции F(), именованой как Name,  через интервалы в T миллисекунд
 %% @end
 %% -----------------------------------------------------------------------------
 
@@ -22,13 +22,13 @@
 stop(Name) -> Name ! stop.
 
 %% запуск таймера
--spec call(Name, T, F) -> Result when
+-spec start(Name, T, F) -> Result when
     Name   :: atom(),
     T      :: non_neg_integer(),
-    F      :: atom(),
+    F      :: fun(),
     Result :: boolean().
 
-call(Name, T, F) when is_atom(Name), is_function(F), is_integer(T), T >= 0 ->
+start(Name, T, F) when is_atom(Name), is_function(F), is_integer(T), T >= 0 ->
     register(Name, spawn(fun() -> tick(Name, T, F) end)).
 
 tick(Name, T, F) ->
