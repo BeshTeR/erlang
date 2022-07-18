@@ -6,6 +6,7 @@
 |*combinatorics*|[Комбинаторика](doc/combinatorics.md)|  
 |*rnd*|[Случайные величины](doc/rnd.md)|  
 |*rat*|[Рациональные числа](doc/rat.md)|  
+|*clock*|[Работа с таймером](doc/clock.md)|  
 |*tests*|[Модуль для проведения тестирования](doc/tests.md)|  
 
 |[Программы](programs)|Описание|  
