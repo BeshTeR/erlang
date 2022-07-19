@@ -45,7 +45,7 @@ pow(N, M, Res) ->
     N      :: non_neg_integer(),
     Return :: pos_integer().
 
-fac(N) when N =:= 0; N =:= 1 -> 1;
+fac(N) when N < 2 -> 1;
 fac(N) ->
     X = N div 2,
     [A, B] = pmap(fun mult/1, [{1, X}, {X+1, N}]),
