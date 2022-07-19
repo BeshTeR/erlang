@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, id/1, pmap/2, flush/0, on_exit/2, type_of/1]).
+-export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, flush/0, on_exit/2, type_of/1]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -46,9 +46,20 @@ pow(N, M, Res) ->
     Return :: pos_integer().
 
 fac(N) when N < 2 -> 1;
-fac(N) ->
-    X = N div 2,
-    [A, B] = pmap(fun mult/1, [{1, X}, {X+1, N}]),
+fac(N) -> mult(1, N).
+
+%% -----------------------------------------------------------------------------
+%% @doc Быстрое произведение натуральных чисел от  M до N
+%% @end
+%% -----------------------------------------------------------------------------
+-spec mult(M, N) -> Result when
+    M      :: non_neg_integer(),
+    N      :: non_neg_integer(),
+    Result :: pos_integer().
+
+mult(M, N) when M > 0, M =< N ->
+    X = (M+N) div 2,
+    [A, B] = pmap(fun mult/1, [{M, X}, {X+1, N}]),
     A*B.
 
 mult({A, A}) -> A;
