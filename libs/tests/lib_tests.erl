@@ -94,6 +94,13 @@ tests(pmap, 2) ->
     {[fun(X) -> X*X end, [1,2,3]], [1,4,9]}
     ];
 
+tests(pcall, 1) ->
+    [
+    {[[]], []},
+    {[[{lib, pow, [2, 10]}]], [1024]},
+    {[[{lib, fac, [5]}, {lib, id, [erlang]}, {lib, pow, [3, 4]}]], [120, erlang, 81]}
+    ];
+
 tests(sleep, 1) ->
     [
     {[0], ok},

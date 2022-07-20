@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, flush/0, on_exit/2, type_of/1]).
+-export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -115,20 +115,47 @@ id(Term) -> Term.
     Return :: [any()].
 
 pmap(F, L) ->
+    Id = make_ref(),
     %% Запускаем процессы вычисления функции
     [spawn_link(
         fun() ->
             receive
-                {Pid, F, X} -> Pid ! {self(), F(X)}
+                {Id, Pid, F, X} -> Pid ! {Id, self(), F(X)}
             end
-        end) ! {self(), F, X}|| X <- L],
+        end) ! {Id, self(), F, X} || X <- L],
     %% Собираем результаты вычислений в список
     [X || {_,X} <- lists:sort(
         fun({A,_}, {B,_}) ->
             A < B
         end,
         [receive
-             {Pid, Res} -> {Pid, Res}
+             {Id, Pid, Res} -> {Pid, Res}
+         end || _ <- lists:seq(1, length(L))])].
+
+%% -----------------------------------------------------------------------------
+%% @doc Параллельный запуск списка функций
+%% @end
+%% -----------------------------------------------------------------------------
+-spec pcall(L) -> Return when
+    L      :: [{atom(), atom(), [any()]}],
+    Return :: [any()].
+
+pcall(L) ->
+    Id = make_ref(),
+    %% Запускаем процессы вычисления функции
+    [spawn_link(
+        fun() ->
+            receive
+                {Id, Pid, M, F, Args} -> Pid ! {Id, self(), apply(M, F, Args)}
+            end
+        end) ! {Id, self(), M, F, Args} || {M, F, Args} <- L],
+    %% Собираем результаты вычислений в список
+    [X || {_,X} <- lists:sort(
+        fun({A,_}, {B,_}) ->
+            A < B
+        end,
+        [receive
+             {Id, Pid, Res} -> {Pid, Res}
          end || _ <- lists:seq(1, length(L))])].
 
 %% -----------------------------------------------------------------------------
