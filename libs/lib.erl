@@ -116,7 +116,7 @@ id(Term) -> Term.
 
 pmap(F, L) ->
     %% Запускаем процессы вычисления функции
-    [spawn(
+    [spawn_link(
         fun() ->
             receive
                 {Pid, F, X} -> Pid ! {self(), F(X)}
