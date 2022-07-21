@@ -7,7 +7,7 @@
 -module(tests).
 
 %% API
--export([run/3, run/1, tc/4, fast/3, os/0]).
+-export([run/3, run/1, tc/4, fast/3, os/0, dbg/0]).
 
 %% Tests
 -include("tests/tests_tests.erl").
@@ -102,3 +102,10 @@ fast(Funs, Args, N) when N > 0 ->
 
 os() ->
     observer:start().
+
+%% -----------------------------------------------------------------------------
+%% @doc Запуск отладчика
+%% @end
+%% -----------------------------------------------------------------------------
+dbg() ->
+    debugger:start().
