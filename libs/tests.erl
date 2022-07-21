@@ -94,12 +94,13 @@ fast(Funs, Args, N) when N > 0 ->
 -spec os() -> Return when
     Return :: ok.
 
-os() ->
-    observer:start().
+os() -> observer:start().
 
 %% -----------------------------------------------------------------------------
 %% @doc Запуск отладчика
 %% @end
 %% -----------------------------------------------------------------------------
-dbg() ->
-    debugger:start().
+-spec dbg() -> Return when
+    Return :: ok.
+
+dbg() -> debugger:start().
