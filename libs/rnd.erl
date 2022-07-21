@@ -45,7 +45,7 @@ new(N) when is_integer(N), N >= 0 ->
     Result :: integer().
 
 new(M, N) when is_integer(M), is_integer(N), M =< N ->
-    round((N-M)*rand:uniform()+M).
+    rand:uniform(N-M+1)+M-1.
 
 %% -----------------------------------------------------------------------------
 %% @doc Случайный элемент непустого списка
@@ -117,7 +117,10 @@ bool() ->
     Result :: 0 | 1.
 
 bit() ->
-    round(rand:uniform()).
+    case rand:uniform() > 0.5 of
+        true -> 1;
+        _    -> 0
+    end.
 
 %% -----------------------------------------------------------------------------
 %% @doc Случайный байт
