@@ -22,8 +22,7 @@
     Result :: float().
 
 rand() ->
-    {_, _, N} = now(),
-    list_to_integer(lists:reverse([X || X <- integer_to_list(N)])) / 1_000_000.
+    list_to_integer(lists:reverse([X || X <- integer_to_list(erlang:system_time(microsecond) rem 1000)])) / 1000.
 
 %% -----------------------------------------------------------------------------
 %% @doc Случайное натуральное число не превосходящее заданного

@@ -57,7 +57,7 @@
 [Erlang web playpen](http://tryerl.seriyps.ru/)  
 [Try Erlang](https://www.tryerlang.org/)  
 
-**Разное**  
+**Разное:**  
 [Rebar3](https://www.rebar3.org/)  
 [Hex](https://hex.pm/)  
 [LFE](https://lfe.io/)  
