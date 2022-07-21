@@ -16,24 +16,24 @@
 %% @doc Тестирование функции
 %% @end
 %% -----------------------------------------------------------------------------
--spec run(Mod, Fun, Arity) -> Return when
-    Mod    :: atom(),
-    Fun    :: atom(),
+-spec run(M, F, Arity) -> Return when
+    M      :: atom(),
+    F      :: atom(),
     Arity  :: non_neg_integer(),
     Return :: ok.
 
-run(Mod, Fun, Arity) ->
-    case  ListTests = Mod:tests(Fun, Arity) of
+run(M, F, Arity) ->
+    case  ListTests = M:tests(F, Arity) of
         [] -> ok;
         _ ->
-            ListErrors = [{Args, Res, ResGood} || {Args, ResGood} <- ListTests, (Res = apply(Mod, Fun, Args)) =/= ResGood],
-            io:format("*** test ~w/~w is ", [Fun, Arity]),
+            ListErrors = [{Args, Res, ResGood} || {Args, ResGood} <- ListTests, (Res = apply(M, F, Args)) =/= ResGood],
+            io:format("*** test ~w/~w is ", [F, Arity]),
             case ListErrors of
                 [] ->
                     io:format("ok~n");
                 _ ->
                     io:format("error~n"),
-                    [io:format("~w~w \t--> ~w~ncorrect --> ~w~n", [Fun, Args, Res, ResGood]) || {Args, Res, ResGood} <- ListErrors]
+                    [io:format("~w~w \t--> ~w~ncorrect --> ~w~n", [F, Args, Res, ResGood]) || {Args, Res, ResGood} <- ListErrors]
             end
     end.
 
@@ -41,39 +41,33 @@ run(Mod, Fun, Arity) ->
 %% @doc Тестирование модуля
 %% @end
 %% -----------------------------------------------------------------------------
--spec run(Mod) -> Return when
-    Mod    :: atom(),
+-spec run(M) -> Return when
+    M      :: atom(),
     Return :: ok.
 
-run(Mod) ->
-    [run(Mod, Fun, Arity) || {Fun, Arity} <- Mod:module_info(exports)],
+run(M) ->
+    [run(M, F, Arity) || {F, Arity} <- M:module_info(exports)],
     ok.
 
 %% -----------------------------------------------------------------------------
-%% @doc Среднее время применения функции по нескольким испытаниям (микросекунд):
-%% {T2, T1}, где T1 - процессорное время, T2 - время по часам
+%% @doc Среднее время применения функции по нескольким испытаниям (микросекунд)
 %% @end
 %% -----------------------------------------------------------------------------
--spec tc(Mod, Fun, Args, N) -> Return when
-    Mod    :: atom(),
-    Fun    :: atom(),
+-spec tc(M, F, Args, N) -> Return when
+    M      :: atom(),
+    F      :: atom(),
     Args   :: [any()],
     N      :: pos_integer(),
-    Return :: {float(), float()}.
+    Return :: float().
 
-tc(Mod, Fun, Args, N) when is_integer(N), N > 0 ->
-    statistics(runtime),
-    statistics(wall_clock),
-    tc({Mod, Fun, Args}, N),
-    {_, T1} = statistics(runtime),
-    {_, T2} = statistics(wall_clock),
-    {T2/N, T1/N}.
+tc(M, F, Args, N) when is_integer(N), N > 0 ->
+    timer:start(),
+    tc({M, F, Args}, N, 0) / N.
 
-tc(_, 0) ->
-    ok;
-tc({M, F, Args}, N) ->
-    apply(M, F, Args),
-    tc({M, F, Args}, N-1).
+tc(_, 0, Sum) -> Sum;
+tc({M, F, Args}, N, Sum) ->
+    {T, _} = timer:tc(M, F, Args),
+    tc({M, F, Args}, N-1, Sum+T).
 
 %% -----------------------------------------------------------------------------
 %% @doc Сравнение скорости работы списка функций на одинаковых аргументах
@@ -90,8 +84,8 @@ fast([], _, _)  ->
 fast([_], _, _) ->
     {error, one_function};
 fast(Funs, Args, N) when N > 0 ->
-    [io:format("~s:~s/~w \t==> ~.5f mks (~.5f mks)~n", [M, F, length(Args), T1, T2]) ||
-    {{M, F}, {T1, T2}} <- lists:sort(fun({_,{A,_}},{_,{B,_}}) -> A < B end, [{{M, F}, tc(M, F, Args, N)} || {M, F} <- Funs])].
+    [io:format("~s:~s/~w \t==> ~.3f mks~n", [M, F, length(Args), T]) ||
+    {{M, F}, T} <- lists:sort(fun({_,A}, {_,B}) -> A < B end, [{{M, F}, tc(M, F, Args, N)} || {M, F} <- Funs])].
 
 %% -----------------------------------------------------------------------------
 %% @doc Запуск мониторинга системы
