@@ -112,7 +112,7 @@ id(Term) -> Term.
 -spec pmap(F, L) -> Return when
     F      :: fun(),
     L      :: [any()],
-    Return :: [any()].
+    Return :: [any() | {error, any()}].
 
 pmap(F, L) ->
     process_flag(trap_exit, true),
@@ -140,7 +140,7 @@ pmap(F, L) ->
 %% -----------------------------------------------------------------------------
 -spec pcall(L) -> Return when
     L      :: [{atom(), atom(), [any()]}],
-    Return :: [any()].
+    Return :: [any() | {error, any()}].
 
 pcall(L) ->
     process_flag(trap_exit, true),
