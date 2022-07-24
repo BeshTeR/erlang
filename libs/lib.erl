@@ -115,6 +115,7 @@ id(Term) -> Term.
     Return :: [any()].
 
 pmap(F, L) ->
+    process_flag(trap_exit, true),
     Id = make_ref(),
     %% Запускаем процессы вычисления функции
     [spawn_link(
@@ -129,7 +130,8 @@ pmap(F, L) ->
             A < B
         end,
         [receive
-             {Id, Pid, Res} -> {Pid, Res}
+             {Id, Pid, Res} -> {Pid, Res};
+             {'EXIT', Pid, Reason} when Reason =/= normal -> {Pid, {error, Reason}}
          end || _ <- lists:seq(1, length(L))])].
 
 %% -----------------------------------------------------------------------------
@@ -141,6 +143,7 @@ pmap(F, L) ->
     Return :: [any()].
 
 pcall(L) ->
+    process_flag(trap_exit, true),
     Id = make_ref(),
     %% Запускаем процессы вычисления функции
     [spawn_link(
@@ -155,7 +158,8 @@ pcall(L) ->
             A < B
         end,
         [receive
-             {Id, Pid, Res} -> {Pid, Res}
+             {Id, Pid, Res} -> {Pid, Res};
+             {'EXIT', Pid, Reason} when Reason =/= normal -> {Pid, {error, Reason}}
          end || _ <- lists:seq(1, length(L))])].
 
 %% -----------------------------------------------------------------------------
