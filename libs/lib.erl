@@ -204,7 +204,7 @@ on_exit(Pid, F) ->
     Return :: pos_integer().
 
 count_msg(Pid) ->
-    {message_queue_len,Length} = process_info(Pid, message_queue_len),
+    {message_queue_len, Length} = process_info(Pid, message_queue_len),
     Length.
 
 %% -----------------------------------------------------------------------------
