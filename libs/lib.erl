@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1]).
+-export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1, count_msg/1]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -194,6 +194,18 @@ on_exit(Pid, F) ->
                 {'EXIT', Pid, Why} -> F(Why)
             end
         end).
+
+%% -----------------------------------------------------------------------------
+%% @doc Количество сообщений в почтовом ящике процесса
+%% @end
+%% -----------------------------------------------------------------------------
+-spec count_msg(Pid) -> Return when
+    Pid    :: pid(),
+    Return :: pos_integer().
+
+count_msg(Pid) ->
+    {message_queue_len,Length} = process_info(Pid, message_queue_len),
+    Length.
 
 %% -----------------------------------------------------------------------------
 %% @doc Тип аргумента
