@@ -1,0 +1,4 @@
+## [Частотный анализ текстового файла](../projects/stat_text/stat_text.erl)
+
+Запуск: ```stat_text:start(File)```  
+где *File* - имя файла с текстом
