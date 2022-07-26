@@ -77,7 +77,7 @@ out_result(File) ->
             io:format("Различных слов: ~w~n", [Words]),
             io:format("Средняя длина слова: ~.2f~n", [Chars/Count]);
         false ->
-            io:format("Файлу \"~s\" пуст~n", [File])
+            io:format("Файл \"~s\" пуст~n", [File])
     end.
 
 %% выводим чистоты по словам и считаем статистику
