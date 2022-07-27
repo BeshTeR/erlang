@@ -62,7 +62,9 @@ out(File) ->
 write(File) ->
     FileName = base_name(File),
     case load(FileName) of
-        ok -> write_base(ets:first(db));
+        ok ->
+            write_base(ets:first(db)),
+            stop();
         {error, Reason} -> {error, Reason}
     end.
 
