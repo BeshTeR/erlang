@@ -23,6 +23,10 @@ tests(write, 1) ->
     [
     {["poem"], ok}
     ];
+tests(convert, 1) ->
+    [
+    {["poem"], ok}
+    ];
 
 tests(_, _) ->
     [].

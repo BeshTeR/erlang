@@ -7,7 +7,7 @@
 -module(stat_text).
 
 %% API
--export([make/1, out/1, write/1]).
+-export([make/1, out/1, write/1, convert/1]).
 
 %% Tests
 -include("tests/stat_text_tests.erl").
@@ -21,8 +21,8 @@
     Return :: ok.
 
 make(File) when is_list(File) ->
-    In = txt_name(File),
-    Out = base_name(File),
+    In = file(File, txt),
+    Out = file(File, base),
     case file:open(In, [read]) of
         {ok, IODevice} ->
             init(),
@@ -35,6 +35,22 @@ make(File) when is_list(File) ->
     end.
 
 %% -----------------------------------------------------------------------------
+%% @doc Преобразование частотной базы в текстовый формат
+%% @end
+%% -----------------------------------------------------------------------------
+-spec convert(File) -> Return when
+    File   :: string(),
+    Return :: ok.
+
+convert(File) ->
+    case load(file(File, base)) of
+        ok ->
+            base_to_stat(File),
+            stop();
+        {error, Reason} -> {error, Reason}
+    end.
+
+%% -----------------------------------------------------------------------------
 %% @doc Вывод статистики по частотной базе из файла
 %% @end
 %% -----------------------------------------------------------------------------
@@ -43,7 +59,7 @@ make(File) when is_list(File) ->
     Return :: ok | {error, any()}.
 
 out(File) ->
-    FileName = base_name(File),
+    FileName = file(File, base),
     case load(FileName) of
         ok ->
             out_result(FileName),
@@ -60,10 +76,10 @@ out(File) ->
     Return :: ok.
 
 write(File) ->
-    FileName = base_name(File),
+    FileName = file(File, base),
     case load(FileName) of
         ok ->
-            write_base(ets:first(db)),
+            write_base(standard_io, ets:first(db)),
             stop();
         {error, Reason} -> {error, Reason}
     end.
@@ -85,6 +101,7 @@ stop() ->
     end.
 
 %% завершение работы с файлом
+stop(standard_io) -> ok;
 stop(IODevice) ->
     case file:close(IODevice) of
         ok -> ok;
@@ -160,19 +177,31 @@ save(File) ->
             {error, Reason}
     end.
 
-%% вывод на экран текущей частотной базы
-write_base('$end_of_table') -> ok;
-write_base(Word) ->
-     case ets:lookup(db, Word) of
+%% сохраняем текущую базу как текстовый файл
+base_to_stat(File) ->
+    FileName = file(File, stat),
+    case file:open(FileName, [write]) of
+        {ok, IODevice} ->
+            write_base(IODevice, ets:first(db)),
+            stop();
+        {error, Reason} ->
+            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [FileName, Reason])
+    end.
+
+%% выводв текстовый файл (на экран) текущей частотной базы
+write_base(IODevice, '$end_of_table') -> stop(IODevice);
+write_base(IODevice, Word) ->
+    case ets:lookup(db, Word) of
         [{Word, N}] ->
-            io:format("~s = ~w~n", [Word, N]),
-            write_base(ets:next(db, Word));
+            io:fwrite(IODevice, "~s = ~w~n", [Word, N]),
+            write_base(IODevice, ets:next(db, Word));
         [] ->
             io:format("Ошибка: слово \"~s\" в статистике отсутствует~n", [Word])
     end.
 
-%% добавляем расширение к имени текстового файла
-txt_name(File) when is_list(File) -> File ++ ".txt".
-
-%% добавляем расширение к имени файла базы со статистикой
-base_name(File) when is_list(File) -> File ++ ".stat".
+%% добавляем расширение к имени файла
+file(File, txt) -> File ++ ".txt";
+file(File, base) -> File ++ ".base";
+file(File, stat)  -> File ++ ".stat";
+file(_, X) ->
+    io:format("Ошибка: недопустимый параметр типа файла: ~w~n", [atom_to_list(X)]).
