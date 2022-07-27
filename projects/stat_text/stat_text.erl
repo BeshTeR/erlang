@@ -88,8 +88,8 @@ stop() ->
     end.
 
 %% завершение работы с файлом
-stop(standard_io) -> ok;
-stop(IODevice) ->
+close(standard_io) -> ok;
+close(IODevice) ->
     case file:close(IODevice) of
         ok -> ok;
         {error, Reason} ->
@@ -101,7 +101,7 @@ stop(IODevice) ->
 lines(IODevice) ->
     case io:get_line(IODevice, "") of
         eof ->
-            stop(IODevice);
+            close(IODevice);
         Line ->
             line(Line),
             lines(IODevice)
@@ -155,7 +155,7 @@ write_stat(IODevice, '$end_of_table', {Chars, Words, Count}) ->
         false ->
             io:format("Error: the current database is empty~n")
     end,
-    stop(IODevice);
+    close(IODevice);
 
 write_stat(IODevice, Word, {Chars, Words, Count}) ->
     case ets:lookup(db, Word) of
