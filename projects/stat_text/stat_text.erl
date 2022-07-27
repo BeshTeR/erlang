@@ -121,7 +121,7 @@ out_result(File) ->
     {Chars, Words, Count} = stat(ets:first(db), {0, 0, 0}),
     case Count =/= 0 of
         true ->
-            io:format("Статистика по файлу \"~s\":~n", [File]),
+            io:format("Статистика (\"~s\"):~n", [File]),
             io:format("Всего букв: ~w~n", [Chars]),
             io:format("Различных слов: ~w~n", [Words]),
             io:format("Средняя длина слова: ~.2f~n", [Chars/Count]);
