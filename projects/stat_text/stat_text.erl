@@ -7,7 +7,7 @@
 -module(stat_text).
 
 %% API
--export([make/1, save/1, load/1, out/1]).
+-export([make/1, out/1]).
 
 %% Tests
 -include("tests/stat_text_tests.erl").
@@ -25,7 +25,6 @@ make(File) when is_list(File) ->
         {ok, IODevice} ->
             init(),
             lines(IODevice),
-            stop(IODevice),
             save(File ++ ".stat"),
             out_result(File),
             stop();
@@ -34,40 +33,7 @@ make(File) when is_list(File) ->
     end.
 
 %% -----------------------------------------------------------------------------
-%% @doc Записываем текущую частотную базу в файл
-%% @end
-%% -----------------------------------------------------------------------------
--spec save(File) -> Return when
-    File   :: string(),
-    Return :: ok | {error, any()}.
-
-save(File) ->
-    case ets:tab2file(db, File) of
-        ok -> ok;
-        {error, Reason} ->
-            io:format("Ошибка при записи в файл: \"~s\": ~w~n", [File, Reason]),
-            {error, Reason}
-    end.
-
-%% -----------------------------------------------------------------------------
-%% @doc Загружаем в текущую частотную базу данные из файла
-%% @end
-%% -----------------------------------------------------------------------------
--spec load(File) -> Return when
-    File   :: string(),
-    Return :: ok | {error, any()}.
-
-load(File) ->
-    stop(),
-    case ets:file2tab(File) of
-        {ok, _} -> ok;
-        {error, Reason} ->
-            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [File, Reason]),
-            {error, Reason}
-    end.
-
-%% -----------------------------------------------------------------------------
-%% @doc Вывод статистики по частотной базе
+%% @doc Вывод статистики по частотной базе из файла
 %% @end
 %% -----------------------------------------------------------------------------
 -spec out(File) -> Return when
@@ -110,7 +76,8 @@ stop(IODevice) ->
 %% читаем очередную строку из файла
 lines(IODevice) ->
     case io:get_line(IODevice, "") of
-        eof -> ok;
+        eof ->
+            stop(IODevice);
         Line ->
             line(Line),
             lines(IODevice)
@@ -152,4 +119,23 @@ stat(Word, {Chars, Words, Count}) ->
             stat(ets:next(db, Word), {Chars+N*length(Word), Words+1, Count+N});
         [] ->
             io:format("Ошибка: слово \"~s\" в статистике отсутствует~n", [Word])
+    end.
+
+%% загружаем в текущую частотную базу данные из файла
+load(File) ->
+    stop(),
+    case ets:file2tab(File) of
+        {ok, _} -> ok;
+        {error, Reason} ->
+            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [File, Reason]),
+            {error, Reason}
+    end.
+
+%% записываем текущую частотную базу в файл
+save(File) ->
+    case ets:tab2file(db, File) of
+        ok -> ok;
+        {error, Reason} ->
+            io:format("Ошибка при записи в файл: \"~s\": ~w~n", [File, Reason]),
+            {error, Reason}
     end.

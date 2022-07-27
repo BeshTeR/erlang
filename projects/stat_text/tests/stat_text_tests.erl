@@ -14,5 +14,10 @@ tests(make, 1) ->
     {["poem.txt"], ok}
     ];
 
+tests(out, 1) ->
+    [
+    {["poem.txt.stat"], ok}
+    ];
+
 tests(_, _) ->
     [].
