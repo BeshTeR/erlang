@@ -9,7 +9,7 @@
     Arity  :: non_neg_integer(),
     Return :: [{[any()], any()}].
 
-tests(start, 1) ->
+tests(make, 1) ->
     [
     {["poem.txt"], ok}
     ];

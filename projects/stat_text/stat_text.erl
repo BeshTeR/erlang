@@ -7,40 +7,105 @@
 -module(stat_text).
 
 %% API
--export([start/1]).
+-export([make/1, save/1, load/1, out/1]).
 
 %% Tests
 -include("tests/stat_text_tests.erl").
 
 %% -----------------------------------------------------------------------------
-%% @doc Запуск расчёта стстистики по файлу File
+%% @doc Запуск расчёта статистики по файлу File
 %% @end
 %% -----------------------------------------------------------------------------
--spec start(File) -> Return when
+-spec make(File) -> Return when
     File   :: string(),
     Return :: ok.
 
-start(File) when is_list(File) ->
+make(File) when is_list(File) ->
     case file:open(File, [read]) of
         {ok, IODevice} ->
-            ets:new(db, [named_table, ordered_set]),
+            init(),
             lines(IODevice),
+            stop(IODevice),
+            save(File ++ ".stat"),
             out_result(File),
-            stop(IODevice);
+            stop();
         {error, Reason} ->
             io:format("Ошибка при открытии файла: \"~s\": ~w~n", [File, Reason])
     end.
 
+%% -----------------------------------------------------------------------------
+%% @doc Записываем текущую частотную базу в файл
+%% @end
+%% -----------------------------------------------------------------------------
+-spec save(File) -> Return when
+    File   :: string(),
+    Return :: ok | {error, any()}.
+
+save(File) ->
+    case ets:tab2file(db, File) of
+        ok -> ok;
+        {error, Reason} ->
+            io:format("Ошибка при записи в файл: \"~s\": ~w~n", [File, Reason]),
+            {error, Reason}
+    end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Загружаем в текущую частотную базу данные из файла
+%% @end
+%% -----------------------------------------------------------------------------
+-spec load(File) -> Return when
+    File   :: string(),
+    Return :: ok | {error, any()}.
+
+load(File) ->
+    stop(),
+    case ets:file2tab(File) of
+        {ok, _} -> ok;
+        {error, Reason} ->
+            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [File, Reason]),
+            {error, Reason}
+    end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Вывод статистики по частотной базе
+%% @end
+%% -----------------------------------------------------------------------------
+-spec out(File) -> Return when
+    File   :: string(),
+    Return :: ok | {error, any()}.
+
+out(File) ->
+    case load(File) of
+        ok ->
+            out_result(File),
+            stop();
+        {error, Reason} -> {error, Reason}
+    end.
+
 %% Private ---------------------------------------------------------------------
 
-%% завершение работы
+%% инициация базы
+init() ->
+    case ets:info(db) of
+        undefined -> ets:new(db, [named_table, ordered_set]);
+        _ -> ets:delete_all_objects(db)
+    end.
+
+%% закрываем базу
+stop() ->
+    case ets:info(db) of
+        undefined -> ok;
+        _ -> ets:delete(db), ok
+    end.
+
+%% завершение работы с файлом
 stop(IODevice) ->
     case file:close(IODevice) of
         ok -> ok;
         {error, Reason} ->
-            io:format("Ошибка при закрытии файла: ~w~n", [Reason])
-    end,
-    ets:delete(db), ok.
+            io:format("Ошибка при закрытии файла: ~w~n", [Reason]),
+            {error, Reason}
+    end.
 
 %% читаем очередную строку из файла
 lines(IODevice) ->
@@ -68,8 +133,7 @@ add(X) ->
 
 %% выводим результаты расчетов
 out_result(File) ->
-    io:format("Частоты по словам:~n"),
-    {Chars, Words, Count} = out_words(ets:first(db), {0, 0, 0}),
+    {Chars, Words, Count} = stat(ets:first(db), {0, 0, 0}),
     case Count =/= 0 of
         true ->
             io:format("Статистика по файлу \"~s\":~n", [File]),
@@ -80,13 +144,12 @@ out_result(File) ->
             io:format("Файл \"~s\" пуст~n", [File])
     end.
 
-%% выводим чистоты по словам и считаем статистику
-out_words('$end_of_table', Acc) -> Acc;
-out_words(Word, {Chars, Words, Count}) ->
+%% считаем статистику
+stat('$end_of_table', Acc) -> Acc;
+stat(Word, {Chars, Words, Count}) ->
     case ets:lookup(db, Word) of
         [{Word, N}] ->
-            io:format("~s -> ~w~n", [Word, N]),
-            out_words(ets:next(db, Word), {Chars+N*length(Word), Words+1, Count+N});
+            stat(ets:next(db, Word), {Chars+N*length(Word), Words+1, Count+N});
         [] ->
             io:format("Ошибка: слово \"~s\" в статистике отсутствует~n", [Word])
     end.
