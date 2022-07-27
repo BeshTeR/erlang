@@ -7,7 +7,7 @@
 -module(stat_text).
 
 %% API
--export([make/1, out/1, write/1, convert/1]).
+-export([make/1, write/1, convert/1]).
 
 %% Tests
 -include("tests/stat_text_tests.erl").
@@ -21,17 +21,16 @@
     Return :: ok.
 
 make(File) when is_list(File) ->
-    In = file(File, txt),
-    Out = file(File, base),
-    case file:open(In, [read]) of
+    FileName = file(File, txt),
+    case file:open(FileName, [read]) of
         {ok, IODevice} ->
             init(),
             lines(IODevice),
-            save(Out),
-            out_result(In),
+            save(file(File, base)),
+            write_stat(standard_io),
             stop();
         {error, Reason} ->
-            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [In, Reason])
+            io:format("Error opening the file: \"~s\": ~w~n", [FileName, Reason])
     end.
 
 %% -----------------------------------------------------------------------------
@@ -45,30 +44,19 @@ make(File) when is_list(File) ->
 convert(File) ->
     case load(file(File, base)) of
         ok ->
-            base_to_stat(File),
+            FileName = file(File, stat),
+            case file:open(FileName, [write]) of
+                {ok, IODevice} ->
+                    write_stat(IODevice);
+                {error, Reason} ->
+                    io:format("Error opening the file: \"~s\": ~w~n", [FileName, Reason])
+            end,
             stop();
         {error, Reason} -> {error, Reason}
     end.
 
 %% -----------------------------------------------------------------------------
-%% @doc Вывод статистики по частотной базе из файла
-%% @end
-%% -----------------------------------------------------------------------------
--spec out(File) -> Return when
-    File   :: string(),
-    Return :: ok | {error, any()}.
-
-out(File) ->
-    FileName = file(File, base),
-    case load(FileName) of
-        ok ->
-            out_result(FileName),
-            stop();
-        {error, Reason} -> {error, Reason}
-    end.
-
-%% -----------------------------------------------------------------------------
-%% @doc Вывод на экран частотной базы из файла
+%% @doc Вывод на экран статистики и частотной базы из файла
 %% @end
 %% -----------------------------------------------------------------------------
 -spec write(File) -> Return when
@@ -76,10 +64,9 @@ out(File) ->
     Return :: ok.
 
 write(File) ->
-    FileName = file(File, base),
-    case load(FileName) of
+    case load(file(File, base)) of
         ok ->
-            write_base(standard_io, ets:first(db)),
+            write_stat(standard_io),
             stop();
         {error, Reason} -> {error, Reason}
     end.
@@ -106,7 +93,7 @@ stop(IODevice) ->
     case file:close(IODevice) of
         ok -> ok;
         {error, Reason} ->
-            io:format("Ошибка при закрытии файла: ~w~n", [Reason]),
+            io:format("Error when closing the file: ~w~n", [Reason]),
             {error, Reason}
     end.
 
@@ -135,36 +122,13 @@ add(X) ->
         [{X, N}] -> ets:insert(db, {X, N+1})
     end.
 
-%% выводим результаты расчетов
-out_result(File) ->
-    {Chars, Words, Count} = stat(ets:first(db), {0, 0, 0}),
-    case Count =/= 0 of
-        true ->
-            io:format("Статистика (\"~s\"):~n", [File]),
-            io:format("Всего букв: ~w~n", [Chars]),
-            io:format("Различных слов: ~w~n", [Words]),
-            io:format("Средняя длина слова: ~.2f~n", [Chars/Count]);
-        false ->
-            io:format("Файл \"~s\" пуст~n", [File])
-    end.
-
-%% считаем статистику
-stat('$end_of_table', Acc) -> Acc;
-stat(Word, {Chars, Words, Count}) ->
-    case ets:lookup(db, Word) of
-        [{Word, N}] ->
-            stat(ets:next(db, Word), {Chars+N*length(Word), Words+1, Count+N});
-        [] ->
-            io:format("Ошибка: слово \"~s\" в статистике отсутствует~n", [Word])
-    end.
-
 %% загружаем в текущую частотную базу данные из файла
 load(File) ->
     stop(),
     case ets:file2tab(File) of
         {ok, _} -> ok;
         {error, Reason} ->
-            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [File, Reason]),
+            io:format("Error opening the file: \"~s\": ~w~n", [File, Reason]),
             {error, Reason}
     end.
 
@@ -173,30 +137,33 @@ save(File) ->
     case ets:tab2file(db, File) of
         ok -> ok;
         {error, Reason} ->
-            io:format("Ошибка при записи в файл: \"~s\": ~w~n", [File, Reason]),
+            io:format("Error when writing to a file: \"~s\": ~w~n", [File, Reason]),
             {error, Reason}
     end.
 
-%% сохраняем текущую базу как текстовый файл
-base_to_stat(File) ->
-    FileName = file(File, stat),
-    case file:open(FileName, [write]) of
-        {ok, IODevice} ->
-            write_base(IODevice, ets:first(db)),
-            stop();
-        {error, Reason} ->
-            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [FileName, Reason])
-    end.
+%% вывод в текстовый файл (на экран) текущей частотной базы и статистики
+write_stat(IODevice) ->
+    write_stat(IODevice, ets:first(db), {0,0,0}).
 
-%% вывод в текстовый файл (на экран) текущей частотной базы
-write_base(IODevice, '$end_of_table') -> stop(IODevice);
-write_base(IODevice, Word) ->
+write_stat(IODevice, '$end_of_table', {Chars, Words, Count}) ->
+    case Count =/= 0 of
+        true ->
+           io:fwrite(IODevice, "Statistics:~n", []),
+           io:fwrite(IODevice, "Total letters: ~w~n", [Chars]),
+           io:fwrite(IODevice, "Number of different words: ~w~n", [Words]),
+           io:fwrite(IODevice, "Average word length: ~.2f~n", [Chars/Count]);
+        false ->
+            io:format("Error: the current database is empty~n")
+    end,
+    stop(IODevice);
+
+write_stat(IODevice, Word, {Chars, Words, Count}) ->
     case ets:lookup(db, Word) of
         [{Word, N}] ->
             io:fwrite(IODevice, "~s = ~w~n", [Word, N]),
-            write_base(IODevice, ets:next(db, Word));
-        [] ->
-            io:format("Ошибка: слово \"~s\" в статистике отсутствует~n", [Word])
+            write_stat(IODevice, ets:next(db, Word), {Chars+N*length(Word), Words+1, Count+N});
+        _ ->
+            io:format("Error: the word \"~s\" is missing in the database~n", [Word])
     end.
 
 %% добавляем расширение к имени файла
@@ -204,4 +171,4 @@ file(File, txt) -> File ++ ".txt";
 file(File, base) -> File ++ ".base";
 file(File, stat)  -> File ++ ".stat";
 file(_, X) ->
-    io:format("Ошибка: недопустимый параметр типа файла: ~w~n", [atom_to_list(X)]).
+    io:format("Error: Invalid file type parameter: ~w~n", [atom_to_list(X)]).
