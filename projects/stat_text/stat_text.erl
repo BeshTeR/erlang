@@ -188,7 +188,7 @@ base_to_stat(File) ->
             io:format("Ошибка при открытии файла: \"~s\": ~w~n", [FileName, Reason])
     end.
 
-%% выводв текстовый файл (на экран) текущей частотной базы
+%% вывод в текстовый файл (на экран) текущей частотной базы
 write_base(IODevice, '$end_of_table') -> stop(IODevice);
 write_base(IODevice, Word) ->
     case ets:lookup(db, Word) of
