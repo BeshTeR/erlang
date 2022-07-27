@@ -11,12 +11,17 @@
 
 tests(make, 1) ->
     [
-    {["poem.txt"], ok}
+    {["poem"], ok}
     ];
 
 tests(out, 1) ->
     [
-    {["poem.txt.stat"], ok}
+    {["poem"], ok}
+    ];
+
+tests(write, 1) ->
+    [
+    {["poem"], ok}
     ];
 
 tests(_, _) ->

@@ -7,13 +7,13 @@
 -module(stat_text).
 
 %% API
--export([make/1, out/1]).
+-export([make/1, out/1, write/1]).
 
 %% Tests
 -include("tests/stat_text_tests.erl").
 
 %% -----------------------------------------------------------------------------
-%% @doc Запуск расчёта статистики по файлу File
+%% @doc Запуск расчёта статистики по текстовому файлу
 %% @end
 %% -----------------------------------------------------------------------------
 -spec make(File) -> Return when
@@ -21,15 +21,17 @@
     Return :: ok.
 
 make(File) when is_list(File) ->
-    case file:open(File, [read]) of
+    In = txt_name(File),
+    Out = base_name(File),
+    case file:open(In, [read]) of
         {ok, IODevice} ->
             init(),
             lines(IODevice),
-            save(File ++ ".stat"),
-            out_result(File),
+            save(Out),
+            out_result(In),
             stop();
         {error, Reason} ->
-            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [File, Reason])
+            io:format("Ошибка при открытии файла: \"~s\": ~w~n", [In, Reason])
     end.
 
 %% -----------------------------------------------------------------------------
@@ -41,10 +43,26 @@ make(File) when is_list(File) ->
     Return :: ok | {error, any()}.
 
 out(File) ->
-    case load(File) of
+    FileName = base_name(File),
+    case load(FileName) of
         ok ->
-            out_result(File),
+            out_result(FileName),
             stop();
+        {error, Reason} -> {error, Reason}
+    end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Вывод на экран частотной базы из файла
+%% @end
+%% -----------------------------------------------------------------------------
+-spec write(File) -> Return when
+    File   :: string(),
+    Return :: ok.
+
+write(File) ->
+    FileName = base_name(File),
+    case load(FileName) of
+        ok -> write_base(ets:first(db));
         {error, Reason} -> {error, Reason}
     end.
 
@@ -84,7 +102,7 @@ lines(IODevice) ->
     end.
 
 %% символы - разделители слов
--define(Punctuation, " \t\n.,;:-()[]{}|/><*~!@#?$%^&").
+-define(Punctuation, "_ \t\n.,;:-()[]{}|/><*~!@#?$%^&`\"").
 
 %% разбираем строку на слова
 line(Line) ->
@@ -139,3 +157,20 @@ save(File) ->
             io:format("Ошибка при записи в файл: \"~s\": ~w~n", [File, Reason]),
             {error, Reason}
     end.
+
+%% вывод на экран текущей частотной базы
+write_base('$end_of_table') -> ok;
+write_base(Word) ->
+     case ets:lookup(db, Word) of
+        [{Word, N}] ->
+            io:format("~s = ~w~n", [Word, N]),
+            write_base(ets:next(db, Word));
+        [] ->
+            io:format("Ошибка: слово \"~s\" в статистике отсутствует~n", [Word])
+    end.
+
+%% добавляем расширение к имени текстового файла
+txt_name(File) when is_list(File) -> File ++ ".txt".
+
+%% добавляем расширение к имени файла базы со статистикой
+base_name(File) when is_list(File) -> File ++ ".stat".
