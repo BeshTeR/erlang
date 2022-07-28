@@ -49,6 +49,7 @@
 |*combinatorics*|[Комбинаторика](doc/combinatorics.md)|  
 |*rnd*|[Случайные величины](doc/rnd.md)|  
 |*rat*|[Рациональные числа](doc/rat.md)|  
+|*chain*|[Цепные дроби](doc/chain.md)|  
 |*clock*|[Работа с таймером](doc/clock.md)|  
 |*tests*|[Модуль для проведения тестирования](doc/tests.md)|  
 |*lib*|[Часто используемые функции](doc/lib.md)|  
