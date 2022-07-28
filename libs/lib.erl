@@ -266,4 +266,4 @@ map_all(F, L) -> [map_all(F, X) || X <- L].
 
 pmap_all(F, X) when not is_list(X) -> F(X);
 pmap_all(_, []) -> [];
-pmap_all(F, L) -> lib:pmap(fun(X) -> pmap_all(F, X) end, L).
+pmap_all(F, L) -> pmap(fun(X) -> pmap_all(F, X) end, L).
