@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1, count_msg/1]).
+-export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1, count_msg/1, depth/1]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -227,3 +227,15 @@ type_of(X) when is_port(X)      -> port;
 type_of(X) when is_function(X)  -> function;
 type_of(X) when is_reference(X) -> reference;
 type_of(X) when is_binary(X)    -> binary.
+
+%% -----------------------------------------------------------------------------
+%% @doc Максимальная глубина списка
+%% @end
+%% -----------------------------------------------------------------------------
+-spec depth(X) -> Return when
+    X :: any(),
+    Return :: non_neg_integer().
+
+depth(X) when not is_list(X) -> 0;
+depth([]) -> 1;
+depth([H|L]) -> max(depth(H)+1, depth(L)).
