@@ -7,7 +7,7 @@
 -module(lib).
 
 %% API
--export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1, count_msg/1, depth/1]).
+-export([gcd/2, sign/1, pow/2, fac/1, mult/2, id/1, pmap/2, pcall/1, flush/0, on_exit/2, type_of/1, count_msg/1, depth/1, map_all/2]).
 
 %% Tests
 -include("tests/lib_tests.erl").
@@ -239,3 +239,18 @@ type_of(X) when is_binary(X)    -> binary.
 depth(X) when not is_list(X) -> 0;
 depth([]) -> 1;
 depth([H|L]) -> max(depth(H)+1, depth(L)).
+
+%% -----------------------------------------------------------------------------
+%% @doc Применить функцию F ко всем элементам L согласно правила:
+%% если L - не список, то = F(L),
+%% если L - список, то = применить F ко всем элементам L на всю глубину.
+%% @end
+%% -----------------------------------------------------------------------------
+-spec map_all(F, L) -> Return when
+    F      :: fun(),
+    L      :: any(),
+    Return :: any().
+
+map_all(F, X) when not is_list(X) -> F(X);
+map_all(_, []) -> [];
+map_all(F, L) -> [map_all(F, X) || X <- L].
