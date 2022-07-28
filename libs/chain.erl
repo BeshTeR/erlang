@@ -40,7 +40,7 @@ make(N, L1) -> make(N, L1, []).
     L2     :: [pos_integer()],
     Return :: chain() | {error, bad_format}.
 
-make(N, L1, L2) when is_integer(N), N > 0, is_list(L1), is_list(L2) ->
+make(N, L1, L2) when is_integer(N), N > 0 ->
     case is_list_integer(L1) andalso is_list_integer(L2) of
         true -> {N, L1, L2};
         false -> {error, bad_format}
