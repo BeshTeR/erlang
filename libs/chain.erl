@@ -131,23 +131,25 @@ is_infinity(C) ->
     C      :: chain(),
     Return :: string().
 
-to_string({N, L1, L2}) ->
+to_string(C) ->
+    {N, L1, L2} = split(C),
     integer_to_list(N) ++
     case L1 =:= [] of
         true -> "";
-        false ->"+" ++ to_string(L1)
+        false ->"+" ++ to_string_list(L1)
     end ++
     case L2 =:= [] of
         true -> "";
-        false -> "+{" ++ to_string(L2) ++ "}"
-    end;
-to_string(L) -> to_string(L, "").
+        false -> "+{" ++ to_string_list(L2) ++ "}"
+    end.
 
-to_string([], Str) -> Str;
-to_string([H], Str) ->
+to_string_list(L) -> to_string_list(L, "").
+
+to_string_list([], Str) -> Str;
+to_string_list([H], Str) ->
     Str ++ "1/" ++ integer_to_list(H);
-to_string([H|L], Str) ->
-    to_string(L, Str ++ "1/" ++ integer_to_list(H) ++ "+").
+to_string_list([H|L], Str) ->
+    to_string_list(L, Str ++ "1/" ++ integer_to_list(H) ++ "+").
 
 %% -----------------------------------------------------------------------------
 %% @doc Преобразовать конечную цепную дробь в рациональной число
@@ -178,7 +180,7 @@ to_float(C) -> rat:to_float(to_rat(C)).
     N      :: non_neg_integer(),
     Return :: chain() | {error, bad_format}.
 
-from_natural(N) -> make(N, [], []).
+from_natural(N) -> make(N, []).
 
 %% -----------------------------------------------------------------------------
 %% @doc Преобразовать рациональное число в цепную дробь
@@ -208,20 +210,28 @@ from_float(X) -> from_rat(rat:from_float(X)).
     C      :: chain(),
     Return :: non_neg_integer() | infinity.
 
-depth({_, [], []}) -> 0;
-depth({_, L1, []}) -> length(L1);
-depth({_, _, _}) -> infinity.
+depth(C) ->
+    {_, L1, L2} = split(C),
+    case L2 =:= [] of
+        true -> length(L1);
+        false -> infinity
+    end.
 
 %% -----------------------------------------------------------------------------
 %% @doc Установить глубину цепной дроби не более, чем N
 %% @end
 %% -----------------------------------------------------------------------------
--spec depth(C, N) -> Return when
-    C      :: chain(),
+-spec depth(N, C) -> Return when
     N      :: non_neg_integer(),
+    C      :: chain(),
     Return :: chain().
 
-depth(C, N) when is_integer(N), N >= 0 -> ok. % ........
+depth(N, C) when is_integer(N), N >= 0 ->
+    Size = depth(C),
+    case Size =/= infinity andalso Size =< N  of
+        true -> C;      % усекать нечего
+        false -> make(nth(0, C), [nth(I, C) || I <- lists:seq(1,N)])
+    end.
 
 %% -----------------------------------------------------------------------------
 %% @doc N-й элемент цепной дроби
@@ -232,9 +242,16 @@ depth(C, N) when is_integer(N), N >= 0 -> ok. % ........
     C      :: chain(),
     Return :: pos_integer() | undefined.
 
-nth(0, {M, _, _}) -> M;
-nth(N, {_, L1, _}) when N =< length(L1) -> lists:nth(N, L1);
-nth(N, {_, L1, L2}) -> nth(L2, N-length(L1));
-nth(_, []) -> undefined;
-nth(N, L) when N =< length(L) -> lists:nth(N, L);
-nth(N, L) -> nth(N-length(L), L).
+nth(0, C) ->
+    {M, _, _} = split(C),
+    M;
+nth(N, C) when is_integer(N), N > 0 ->
+    {_, L1, L2} = split(C),
+    case N =< length(L1) of
+        true -> lists:nth(N, L1);
+        false -> nth_circle(N-length(L1), L2)
+    end.
+
+nth_circle(_, []) -> undefined;
+nth_circle(N, L) when N =< length(L) -> lists:nth(N, L);
+nth_circle(N, L) -> nth_circle(N-length(L), L).
