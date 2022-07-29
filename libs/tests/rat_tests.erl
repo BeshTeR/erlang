@@ -200,7 +200,7 @@ tests(split, 1) ->
     {[?R(-20,7)],  {-2, ?R(-6,7)}}
     ];
 
-tests(integer_to_rat, 1) ->
+tests(from_integer, 1) ->
     [
     {[1],  ?R(1,1)},
     {[0],  ?R(0,1)},
@@ -208,7 +208,7 @@ tests(integer_to_rat, 1) ->
     {[-8], ?R(-8,1)}
     ];
 
-tests(float_to_rat, 2) ->
+tests(from_float, 2) ->
     [
     {[1.5, 1],  ?R(3,2)},
     {[0.0, 1],  ?R(0,1)},

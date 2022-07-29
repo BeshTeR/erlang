@@ -24,7 +24,7 @@
 -export([equal/2, less/2, greq/2]).
 
 %% Преобразование типа
--export([to_string/1, to_float/1, split/1, integer_to_rat/1, float_to_rat/2]).
+-export([to_string/1, to_float/1, from_integer/1, from_float/2, split/1]).
 
 %% Tests -----------------------------------------------------------------------
 -include("tests/rat_tests.erl").
@@ -91,23 +91,23 @@ one() ->
 %% @doc Преобразует целое число в рациональное
 %% @end
 %% -----------------------------------------------------------------------------
--spec integer_to_rat(Int) -> Return when
+-spec from_integer(Int) -> Return when
     Int    :: integer(),
     Return :: rational().
 
-integer_to_rat(Int) when is_integer(Int) ->
+from_integer(Int) when is_integer(Int) ->
     make(Int, 1).
 
 %% -----------------------------------------------------------------------------
 %% @doc Преобразует вещественное число в рациональное (учитывая N знаков после запятой)
 %% @end
 %% -----------------------------------------------------------------------------
--spec float_to_rat(Float, N) -> Return when
+-spec from_float(Float, N) -> Return when
     Float  :: float(),
     N      :: non_neg_integer(),
     Return :: rational().
 
-float_to_rat(Float, N) when is_float(Float), is_integer(N), N > 0 ->
+from_float(Float, N) when is_float(Float), is_integer(N), N > 0 ->
     Z = trunc(lib:pow(10, N)),
     make(round(Float*Z), Z).
 
