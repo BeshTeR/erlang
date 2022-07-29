@@ -24,7 +24,7 @@
 -export([]). % .......
 
 %% Преобразования
--export([to_string/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/1]).
+-export([to_string/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/2]).
 
 %% Tests -----------------------------------------------------------------------
 -include("tests/chain_tests.erl").
@@ -63,7 +63,7 @@ make(N, L1, []) ->
         true ->
             case lists:last(L1) =:= 1 of
                 true ->
-                    [H1,H2|T] = lists:reverse(L1),
+                    [_,H2|T] = lists:reverse(L1),
                     {N, lists:reverse([H2+1|T]), []};
                 false -> C
             end;
@@ -84,12 +84,11 @@ make(N, L1, L2) ->
     C      :: chain(),
     Return :: {non_neg_integer(), [pos_integer()], [pos_integer()]} | {error, bad_format}.
 
-split(C = {N, L1, L2}) ->
+split(C) ->
     case is_chain(C) of
         true -> C;
         false -> {error, bad_format}
-    end;
-split(_) -> {error, bad_format}.
+    end.
 
 %% -----------------------------------------------------------------------------
 %% @doc Это цепная дробь ?
@@ -166,7 +165,7 @@ to_rat(C) ->
             [H|T] = lists:reverse([N|L1]),
             {Num, Den} = to_rat(T, {H, 1}),
             rat:make(Num, Den);
-        fasle -> undefined
+        false -> undefined
     end.
 
 to_rat([], Acc) -> Acc;
@@ -200,17 +199,27 @@ from_natural(N) -> make(N, []).
     R      :: rat:rat(),
     Return :: chain().
 
-from_rat(C) -> ok. % ........
+from_rat(R) ->
+    M = rat:numerator(R),
+    N = rat:denominator(R),
+    [H|T] = list_nums(M, N, []),
+    make(H, T).
+
+list_nums(M, 1, Acc) -> lists:reverse([M|Acc]);
+list_nums(M, N, Acc) ->
+    Z = M div N,
+    list_nums(N, M-N*Z, [Z|Acc]).
 
 %% -----------------------------------------------------------------------------
-%% @doc Преобразовать вещественное число в цепную дробь
+%% @doc Преобразовать вещественное число в цепную дробь (учитывая N знаков после запятой)
 %% @end
 %% -----------------------------------------------------------------------------
--spec from_float(X) -> Return when
+-spec from_float(X, N) -> Return when
     X      :: float(),
+    N      :: non_neg_integer(),
     Return :: chain().
 
-from_float(X) -> from_rat(rat:from_float(X)).
+from_float(X, N) when is_float(X), is_integer(N), N >= 0 -> from_rat(rat:from_float(X, N)).
 
 %% -----------------------------------------------------------------------------
 %% @doc Глубина цепной дроби

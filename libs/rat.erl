@@ -107,9 +107,9 @@ from_integer(Int) when is_integer(Int) ->
     N      :: non_neg_integer(),
     Return :: rational().
 
-from_float(Float, N) when is_float(Float), is_integer(N), N > 0 ->
+from_float(Float, N) when is_float(Float), is_integer(N), N >= 0 ->
     Z = trunc(lib:pow(10, N)),
-    make(round(Float*Z), Z).
+    make(trunc(Float*Z), Z).
 
 %% -----------------------------------------------------------------------------
 %% @doc Разбивает рациональное число на целую и дробную части
