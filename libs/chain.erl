@@ -82,9 +82,14 @@ make(N, L1, L2) ->
 %% -----------------------------------------------------------------------------
 -spec split(C) -> Return when
     C      :: chain(),
-    Return :: {non_neg_integer(), [pos_integer()], [pos_integer()]}.
+    Return :: {non_neg_integer(), [pos_integer()], [pos_integer()]} | {error, bad_format}.
 
-split({N, L1, L2}) -> {N, L1, L2}.
+split(C = {N, L1, L2}) ->
+    case is_chain(C) of
+        true -> C;
+        false -> {error, bad_format}
+    end;
+split(_) -> {error, bad_format}.
 
 %% -----------------------------------------------------------------------------
 %% @doc Это цепная дробь ?
