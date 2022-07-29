@@ -55,6 +55,20 @@ make(N, L1) -> make(N, L1, []).
     L2     :: [pos_integer()],
     Return :: chain() | {error, bad_format}.
 
+make(N, [], []) when is_integer(N), N >= 0 -> {N, [], []};
+make(N, [1], []) -> make(N+1, [], []);
+make(N, L1, []) ->
+    C = {N, L1, []},
+    case is_chain(C) of
+        true ->
+            case lists:last(L1) =:= 1 of
+                true ->
+                    [H1,H2|T] = lists:reverse(L1),
+                    {N, lists:reverse([H2+1|T]), []};
+                false -> C
+            end;
+        false -> {error, bad_format}
+    end;
 make(N, L1, L2) ->
     C = {N, L1, L2},
     case is_chain(C) of
