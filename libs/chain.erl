@@ -9,7 +9,7 @@
 %% API -------------------------------------------------------------------------
 
 %% Конструкторы
--export([make/1, make/2, make/3]).
+-export([make/2, make/3]).
 
 %% Предикаты
 -export([is_chain/1]).
@@ -21,7 +21,7 @@
 %% ...
 
 %% Преобразования
--export([to_string/1, to_rat/1, to_float/1, from_rat/1, from_float/1]).
+-export([to_string/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/1]).
 
 %% Разное
 -export([depth/1, depth/2, nth/2]).
@@ -35,15 +35,9 @@
                  [pos_integer()]}.  % периодическая часть дроби
 
 %% -----------------------------------------------------------------------------
-%% @doc Конструкторы цепной дроби
+%% @doc Конструктор конечной цепной дроби
 %% @end
 %% -----------------------------------------------------------------------------
--spec make(N) -> Return when
-    N      :: pos_integer(),
-    Return :: chain() | {error, bad_format}.
-
-make(N) -> make(N, [], []).
-
 -spec make(N, L1) -> Return when
     N      :: pos_integer(),
     L1     :: [pos_integer()],
@@ -51,8 +45,12 @@ make(N) -> make(N, [], []).
 
 make(N, L1) -> make(N, L1, []).
 
+%% -----------------------------------------------------------------------------
+%% @doc Конструктор бесконечной цепной дроби
+%% @end
+%% -----------------------------------------------------------------------------
 -spec make(N, L1, L2) -> Return when
-    N      :: pos_integer(),
+    N      :: non_neg_integer(),
     L1     :: [pos_integer()],
     L2     :: [pos_integer()],
     Return :: chain() | {error, bad_format}.
@@ -72,7 +70,7 @@ make(N, L1, L2) ->
     C      :: any(),
     Return :: boolean().
 
-is_chain({N, L1, L2}) when is_integer(N), N > 0 ->
+is_chain({N, L1, L2}) when is_integer(N), N >= 0 ->
     is_list_integer(L1) andalso is_list_integer(L2);
 is_chain(_) -> false.
 
@@ -126,6 +124,16 @@ to_rat(C) -> ok.
     Return :: float().
 
 to_float(C) -> rat:to_float(to_rat(C)).
+
+%% -----------------------------------------------------------------------------
+%% @doc Преобразовать натуральное число в цепную дробь
+%% @end
+%% -----------------------------------------------------------------------------
+-spec from_natural(N) -> Return when
+    N      :: non_neg_integer(),
+    Return :: chain() | {error, bad_format}.
+
+from_natural(N) -> make(N, [], []).
 
 %% -----------------------------------------------------------------------------
 %% @doc Преобразовать рациональное число в цепную дробь
