@@ -21,10 +21,10 @@
 %% ...
 
 %% Преобразования
--export([to_string/1, to_rat/1, to_float/1, from_rat/1]).
+-export([to_string/1, to_rat/1, to_float/1, from_rat/1, from_float/1]).
 
 %% Разное
--export([depth/1, depth/2]).
+-export([depth/1, depth/2, nth/2]).
 
 %% Tests -----------------------------------------------------------------------
 -include("tests/chain_tests.erl").
@@ -138,14 +138,26 @@ to_float(C) -> rat:to_float(to_rat(C)).
 from_rat(C) -> ok.
 
 %% -----------------------------------------------------------------------------
+%% @doc Преобразовать вещественное число в цепную дробь
+%% @end
+%% -----------------------------------------------------------------------------
+-spec from_float(X) -> Return when
+    X      :: float(),
+    Return :: chain().
+
+from_float(X) -> from_rat(rat:from_float(X)).
+
+%% -----------------------------------------------------------------------------
 %% @doc Глубина цепной дроби
 %% @end
 %% -----------------------------------------------------------------------------
 -spec depth(C) -> Return when
     C      :: chain(),
-    Return :: non_neg_integer().
+    Return :: non_neg_integer() | infinity.
 
-depth(C) -> ok.
+depth({_, [], []}) -> 0;
+depth({_, L1, []}) -> length(L1);
+depth({_, _, _}) -> infinity.
 
 %% -----------------------------------------------------------------------------
 %% @doc Глубина цепной дроби
@@ -157,3 +169,19 @@ depth(C) -> ok.
     Return :: chain().
 
 depth(C, N) when is_integer(N), N >= 0 -> ok.
+
+%% -----------------------------------------------------------------------------
+%% @doc N-й элемент цепной дроби
+%% @end
+%% -----------------------------------------------------------------------------
+-spec nth(N, C) -> Return when
+    N      :: non_neg_integer(),
+    C      :: chain(),
+    Return :: pos_integer() | undefined.
+
+nth(0, {M, _, _}) -> M;
+nth(N, {_, L1, _}) when N =< length(L1) -> lists:nth(N, L1);
+nth(N, {_, L1, L2}) -> nth(L2, N-length(L1));
+nth(_, []) -> undefined;
+nth(N, L) when N =< length(L) -> lists:nth(N, L);
+nth(N, L) -> nth(N-length(L), L).

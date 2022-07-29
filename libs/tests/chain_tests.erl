@@ -63,5 +63,38 @@ tests(is_chain, 1) ->
     {[atom],                   false}
     ];
 
+tests(to_rat, 1) ->
+    [
+    ];
+
+tests(to_float, 1) ->
+    [
+    ];
+
+tests(from_rat, 1) ->
+    [
+    ];
+
+tests(from_float, 1) ->
+    [
+    ];
+
+tests(depth, 1) ->
+    [
+    {[?chain(3, [], [])],        0},
+    {[?chain(3, [22], [])],      1},
+    {[?chain(3, [1, 2], [])],    2},
+    {[?chain(3, [], [1])],       infinity},
+    {[?chain(3, [2,3], [1, 2])], infinity}
+    ];
+
+tests(depth, 2) ->
+    [
+    ];
+
+tests(nth, 2) ->
+    [
+    ];
+
 tests(_, _) ->
     [].
