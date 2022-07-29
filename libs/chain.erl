@@ -14,17 +14,17 @@
 %% Предикаты
 -export([is_chain/1, is_infinity/1]).
 
+%% Индексирование элементов цепной дроби
+-export([depth/1, depth/2, nth/2]).
+
 %% Математические операции
-%% ...
+-export([]). % .......
 
 %% Логические операции сравнения
-%% ...
+-export([]). % .......
 
 %% Преобразования
 -export([to_string/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/1]).
-
-%% Разное
--export([depth/1, depth/2, nth/2]).
 
 %% Tests -----------------------------------------------------------------------
 -include("tests/chain_tests.erl").
