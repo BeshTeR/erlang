@@ -86,76 +86,77 @@ tests(id, 1) ->
 
 tests(pmap, 2) ->
     [
-    {[fun id/1, [1,2,3]], [1,2,3]},
-    {[fun(_) -> 1 end, [1,2,3]], [1,1,1]},
+    {[fun id/1, [1,2,3]],            [1,2,3]},
+    {[fun id/1, []],                 []},
+    {[fun(_) -> 1 end, [1,2,3]],     [1,1,1]},
     {[fun(_) -> false end, [1,2,3]], [false,false,false]},
-    {[fun(X) -> X*X end, []], []},
-    {[fun(X) -> X*X end, [5]], [25]},
-    {[fun(X) -> X*X end, [1,2,3]], [1,4,9]}
+    {[fun(X) -> X*X end, []],        []},
+    {[fun(X) -> X*X end, [5]],       [25]},
+    {[fun(X) -> X*X end, [1,2,3]],   [1,4,9]}
     ];
 
 tests(pcall, 1) ->
     [
-    {[[]], []},
-    {[[{lib, pow, [2, 10]}]], [1024]},
+    {[[]],                                                         []},
+    {[[{lib, pow, [2, 10]}]],                                      [1024]},
     {[[{lib, fac, [5]}, {lib, id, [erlang]}, {lib, pow, [3, 4]}]], [120, erlang, 81]}
     ];
 
 tests(sleep, 1) ->
     [
-    {[0], ok},
+    {[0],  ok},
     {[10], ok}
     ];
 
 tests(type_of, 1) ->
     [
-    {[true],                        boolean},
-    {[false],                       boolean},
-    {[erlang],                      atom},
-    {['Erlang lang'],               atom},
-    {[0],                           integer},
-    {[-10],                         integer},
-    {[10],                          integer},
-    {[0.0],                         real},
-    {[-10.1e-2],                    real},
-    {[[]],                          list},
-    {[[1, {}]],                     list},
-    {[[{1,2}]],                     list},
-    {[{}],                          tuple},
-    {[{[]}],                        tuple},
-    {[#{key => value}],             map},
-    {[#{}],                         map},
-    {[self()],                      pid},
-    {[fun lib:id/0],                function},
-    {[fun() -> ok end],             function},
-    {[make_ref()],                  reference},
-    {[list_to_binary("erlang")],    binary},
-    {[<<"">>],                      binary},
-    {[<<123, 321, 213>>],           binary},
-    {[<<>>],                        binary},
+    {[true],                                      boolean},
+    {[false],                                     boolean},
+    {[erlang],                                    atom},
+    {['Erlang lang'],                             atom},
+    {[0],                                         integer},
+    {[-10],                                       integer},
+    {[10],                                        integer},
+    {[0.0],                                       real},
+    {[-10.1e-2],                                  real},
+    {[[]],                                        list},
+    {[[1, {}]],                                   list},
+    {[[{1,2}]],                                   list},
+    {[{}],                                        tuple},
+    {[{[]}],                                      tuple},
+    {[#{key => value}],                           map},
+    {[#{}],                                       map},
+    {[self()],                                    pid},
+    {[fun lib:id/0],                              function},
+    {[fun() -> ok end],                           function},
+    {[make_ref()],                                reference},
+    {[list_to_binary("erlang")],                  binary},
+    {[<<"">>],                                    binary},
+    {[<<123, 321, 213>>],                         binary},
+    {[<<>>],                                      binary},
     {[begin {_, X} = gen_udp:open(0, []), X end], port}
     ];
 
 tests(depth, 1) ->
     [
-    {[erlang], 0},
-    {[[]], 1},
-    {[{[1]}], 0},
-    {[[1,2,3, [erlang], 4, 5]], 2},
-    {[[1,2,3, [[[]]], [4], [[5]]]], 4}
+    {[erlang],                       0},
+    {[[]],                           1},
+    {[{[1]}],                        0},
+    {[[1,2,3, [erlang], 4, 5]],      2},
+    {[[1,2,3, [[[]]], [4],  [[5]]]], 4}
     ];
 
 tests(map_all, 2) ->
     [
-    {[fun(X)-> X*2 end, []], []},
-    {[fun(X)-> X*2 end, 5], 10},
+    {[fun(X)-> X*2 end, []],                                    []},
+    {[fun(X)-> X*2 end, 5],                                     10},
     {[fun(X)-> X*2 end, [1,2,3,[4,5,0], [[6, 11]], [], [7],8]], [2,4,6,[8,10,0],[[12,22]],[],[14],16]}
     ];
 
 tests(pmap_all, 2) ->
     [
-    {[fun(X)-> X*2 end, []], []},
-    {[fun(X)-> X*2 end, 5], 10},
+    {[fun(X)-> X*2 end, []],                                    []},
+    {[fun(X)-> X*2 end, 5],                                     10},
     {[fun(X)-> X*2 end, [1,2,3,[4,5,0], [[6, 11]], [], [7],8]], [2,4,6,[8,10,0],[[12,22]],[],[14],16]}
     ];
 

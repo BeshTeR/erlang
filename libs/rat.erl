@@ -6,14 +6,30 @@
 %%% ----------------------------------------------------------------------------
 -module(rat).
 
-%% API
--export([make/2, numerator/1, denominator/1, zero/0, one/0, mult/2, division/2, rev/1,  add/2, sub/2, pow/2, is_rational/1, is_zero/1, is_negativ/1]).
--export([is_positiv/1, equal/2, less/2, greq/2, to_string/1, to_float/1, split/1, integer_to_rat/1, float_to_rat/2, is_full/1]).
+%% API -------------------------------------------------------------------------
 
-%% Tests
+%% Конструкторы и селекторы
+-export([make/2, numerator/1, denominator/1]).
+
+%% Константы
+-export([zero/0, one/0]).
+
+%% Арифметические операции
+-export([mult/2, division/2, rev/1,  add/2, sub/2, pow/2]).
+
+%% Предикаты
+-export([is_rational/1, is_zero/1, is_negativ/1, is_positiv/1, is_full/1]).
+
+%% Операции сравнения
+-export([equal/2, less/2, greq/2]).
+
+%% Преобразование типа
+-export([to_string/1, to_float/1, split/1, integer_to_rat/1, float_to_rat/2]).
+
+%% Tests -----------------------------------------------------------------------
 -include("tests/rat_tests.erl").
 
-%% Тип - рациональное число
+%% Тип - рациональное число ----------------------------------------------------
 -type rational() :: {integer(), pos_integer()}.
 
 %% -----------------------------------------------------------------------------
