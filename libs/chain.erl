@@ -84,11 +84,17 @@ make(N, L1, L2) ->
     C      :: chain(),
     Return :: {non_neg_integer(), [pos_integer()], [pos_integer()]} | {error, bad_format}.
 
-split(C) ->
-    case is_chain(C) of
-        true -> C;
+split({N, L1, L2}) when is_integer(N), N >= 0 ->
+    case is_list_integer(L1) andalso is_list_integer(L2) of
+        true -> {N, L1, L2};
         false -> {error, bad_format}
-    end.
+    end;
+split(_) -> {error, bad_format}.
+
+%% это список целых положительных чисел ?
+is_list_integer([]) -> true;
+is_list_integer([H|T]) when is_integer(H), H > 0 -> is_list_integer(T);
+is_list_integer(_) -> false.
 
 %% -----------------------------------------------------------------------------
 %% @doc Это цепная дробь ?
@@ -98,14 +104,11 @@ split(C) ->
     C      :: any(),
     Return :: boolean().
 
-is_chain({N, L1, L2}) when is_integer(N), N >= 0 ->
-    is_list_integer(L1) andalso is_list_integer(L2);
-is_chain(_) -> false.
-
-%% это список целых положительных чисел ?
-is_list_integer([]) -> true;
-is_list_integer([H|T]) when is_integer(H), H > 0 -> is_list_integer(T);
-is_list_integer(_) -> false.
+is_chain(C) ->
+    case split(C) of
+        {_, _, _} -> true;
+        {error, bad_format} -> false
+    end.
 
 %% -----------------------------------------------------------------------------
 %% @doc Это бесконечная цепная дробь ?
