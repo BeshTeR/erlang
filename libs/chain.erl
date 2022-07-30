@@ -21,10 +21,10 @@
 -export([]). % .......
 
 %% Логические операции сравнения
--export([]). % .......
+-export([equal/2, less/2, greq/2]).
 
 %% Преобразования
--export([to_string/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/2]).
+-export([to_string/1, to_list/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/2]).
 
 %% Tests -----------------------------------------------------------------------
 -include("tests/chain_tests.erl").
@@ -154,6 +154,21 @@ to_string_list([H|L], Str) ->
     to_string_list(L, Str ++ "1/" ++ integer_to_list(H) ++ "+").
 
 %% -----------------------------------------------------------------------------
+%% @doc Преобразовать конечную цепную дробь в список
+%% @end
+%% -----------------------------------------------------------------------------
+-spec to_list(C) -> Return when
+    C      :: chain(),
+    Return :: [pos_integer()] | undefined.
+
+to_list(C) ->
+    {N, L1, L2} = split(C),
+    case L2 =/= [] of
+        true -> undefined;
+        false -> [N|L1]
+    end.
+
+%% -----------------------------------------------------------------------------
 %% @doc Преобразовать конечную цепную дробь в рациональной число
 %% @end
 %% -----------------------------------------------------------------------------
@@ -277,3 +292,68 @@ nth(N, C) when is_integer(N), N > 0 ->
 nth_circle(_, []) -> undefined;
 nth_circle(N, L) when N =< length(L) -> lists:nth(N, L);
 nth_circle(N, L) -> nth_circle(N-length(L), L).
+
+%% -----------------------------------------------------------------------------
+%% @doc Сравнение цепных дробей на равенство (C1 =:= C2)
+%% @end
+%% -----------------------------------------------------------------------------
+-spec equal(C1, C2) -> Return when
+    C1     :: chain(),
+    C2     :: chain(),
+    Return :: boolean().
+
+equal(C1, C2) ->
+    N = max(min_len(C1), min_len(C2)),
+    in_list(depth(N, C1)) =:= in_list(depth(N, C2)).
+
+%% минимальное количество различных чисел в цепной дроби
+min_len(C) ->
+    {_, L1, L2} = split(C),
+    length(L1)+length(L2)+1.
+
+%% собрать элементы цепной дроби в список
+in_list(C) ->
+    {N, L1, L2} = split(C),
+    [N|L1] ++ L2.
+
+%% -----------------------------------------------------------------------------
+%% @doc Сравнение цепных дробей на больше (C1 > C2)
+%% @end
+%% -----------------------------------------------------------------------------
+-spec greq(C1, C2) -> Return when
+    C1     :: chain(),
+    C2     :: chain(),
+    Return :: boolean().
+
+greq(C1, C2) -> compare(C1, C2, true).
+
+%% -----------------------------------------------------------------------------
+%% @doc Сравнение цепных дробей на меньше (C1 < C2)
+%% @end
+%% -----------------------------------------------------------------------------
+-spec less(C1, C2) -> Return when
+    C1     :: chain(),
+    C2     :: chain(),
+    Return :: boolean().
+
+less(C1, C2) -> compare(C1, C2, false).
+
+%% сравнить поэлементно
+compare([], [], _) -> false;
+compare([], _, F) -> not F;
+compare(_, [], F) -> F;
+compare([H|T1], [H|T2], F) -> compare(T1, T2, not F);
+compare([H1|_], [H2|_], F) when H1 > H2 -> F;
+compare([H1|_], [H2|_], F) when H1 < H2 -> not F;
+compare(C1, C2, F) ->
+    N = max(min_len(C1), min_len(C2)),
+    [H1|T1] = L1 = in_list(depth(N, C1)),
+    [H2|T2] = L2 = in_list(depth(N, C2)),
+    case H1 =:= H2 andalso ((T1 =:= []) xor (T2 =:= [])) of
+        true ->
+            case F of
+                true -> T1 =/= [];
+                false -> T2 =/= []
+            end;
+        false -> compare(L1, L2, F)
+    end.
