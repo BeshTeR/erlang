@@ -312,5 +312,25 @@ tests(less, 2) ->
     {[{1,[],[1]}, {1,[1,1,1,1,1],[]}], true}
     ];
 
+tests(mult, 2) ->
+    [
+    ];
+
+tests(division, 2) ->
+    [
+    ];
+
+tests(add, 2) ->
+    [
+    ];
+
+tests(sub, 2) ->
+    [
+    ];
+
+tests(rev, 1) ->
+    [
+    ];
+
 tests(_, _) ->
     [].
