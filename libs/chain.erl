@@ -1,7 +1,7 @@
 %%% ----------------------------------------------------------------------------
 %%% @author Oleg Muraviev <avesh.net@bk.ru>
 %%%
-%%% @doc Библиотека работы с цепными дробями (... В РАЗРАБОТКЕ)
+%%% @doc Библиотека работы с цепными дробями
 %%% @end
 %%% ----------------------------------------------------------------------------
 -module(chain).
@@ -427,6 +427,25 @@ sub(C1, C2) ->
 %% -----------------------------------------------------------------------------
 -spec rev(C) -> Return when
     C      :: chain(),
-    Return :: chain().
+    Return :: chain() | {error, division_by_zero}.
 
-rev(C) -> C, void.
+rev(C) ->
+    {N, L1, L2} = split(C),
+    case N =:= 0 of
+        true ->
+            case L1 =:= [] andalso L2 =:= [] of
+                true -> {error, division_by_zero};
+                false ->
+                    case L1 =/= [] of
+                        true ->
+                            [H|T] = L1,
+                            make(H, T, L2);
+                        false ->
+                            [H|T] = L2,
+                            make(H, T, L2)
+                    end
+            end;
+        false -> make(0, [N|L1], L2)
+    end.
+
+
