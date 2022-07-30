@@ -392,7 +392,7 @@ division(C1, C2) -> from_rat(rat:division(to_rat(C1),to_rat(C2))).
 add(C1, C2) -> from_rat(rat:add(to_rat(C1),to_rat(C2))).
 
 %% -----------------------------------------------------------------------------
-%% @doc Вычитание конечных цепных дробей (C1 - C2)
+%% @doc Модуль разности конечных цепных дробей (C1 - C2)
 %% @end
 %% -----------------------------------------------------------------------------
 -spec sub(C1, C2) -> Return when
@@ -400,7 +400,11 @@ add(C1, C2) -> from_rat(rat:add(to_rat(C1),to_rat(C2))).
     C2     :: chain(),
     Return :: chain().
 
-sub(C1, C2) -> from_rat(rat:sub(to_rat(C1),to_rat(C2))).
+sub(C1, C2) ->
+    case greq(C1, C2) of
+        true -> from_rat(rat:sub(to_rat(C1),to_rat(C2)));
+        false -> from_rat(rat:sub(to_rat(C2),to_rat(C1)))
+    end.
 
 %% -----------------------------------------------------------------------------
 %% @doc Цепная дробь обратная данной (1/C)
