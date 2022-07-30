@@ -21,7 +21,7 @@
 -export([mult/2, division/2, rev/1,  add/2, sub/2]).
 
 %% Логические операции сравнения
--export([equal/2, less/2, greq/2]).
+-export([equal/2, less/2, greq/2, under/2]).
 
 %% Преобразования
 -export([to_string/1, to_list/1, to_rat/1, to_float/1, from_natural/1, from_rat/1, from_float/2]).
@@ -357,6 +357,21 @@ compare(C1, C2, F) ->
             end;
         false -> compare(L1, L2, F)
     end.
+
+%% -----------------------------------------------------------------------------
+%% @doc Цепная дробь является поддробью другой цепной дроби (C1 <- C2)
+%% @end
+%% -----------------------------------------------------------------------------
+-spec under(C1, C2) -> Return when
+    C1     :: chain(),
+    C2     :: chain(),
+    Return :: boolean().
+
+under(C1, C2) ->
+    N = max(min_len(C1), min_len(C2)),
+    S1 = in_list(depth(N, C1)),
+    S2 = in_list(depth(N, C2)),
+    lists:sublist(S2, length(S1)) =:= S1.
 
 %% -----------------------------------------------------------------------------
 %% @doc Умножение конечных цепных дробей (C1 * C2)
