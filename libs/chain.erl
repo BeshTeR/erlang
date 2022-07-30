@@ -436,14 +436,12 @@ rev(C) ->
             case L1 =:= [] andalso L2 =:= [] of
                 true -> {error, division_by_zero};
                 false ->
+                    [H|T] =
                     case L1 =/= [] of
-                        true ->
-                            [H|T] = L1,
-                            make(H, T, L2);
-                        false ->
-                            [H|T] = L2,
-                            make(H, T, L2)
-                    end
+                        true -> L1;
+                        false -> L2
+                    end,
+                    make(H, T, L2)
             end;
         false -> make(0, [N|L1], L2)
     end.
