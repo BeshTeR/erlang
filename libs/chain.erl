@@ -145,7 +145,7 @@ to_string(C) ->
     end ++
     case L2 =:= [] of
         true -> dup(length(L1), "");
-        false -> "+{" ++ to_string_list(L2, false) ++ "}..."
+        false -> "+{" ++ to_string_list(L2, false) ++ "}+..."
     end.
 
 to_string_list(L, F) -> to_string_list(L, "", F).
