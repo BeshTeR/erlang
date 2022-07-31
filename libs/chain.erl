@@ -141,20 +141,27 @@ to_string(C) ->
     integer_to_list(N) ++
     case L1 =:= [] of
         true -> "";
-        false ->"+" ++ to_string_list(L1)
+        false ->"+" ++ to_string_list(L1, L2 =/= [])
     end ++
     case L2 =:= [] of
-        true -> "";
-        false -> "+{" ++ to_string_list(L2) ++ "}"
+        true -> dup(length(L1), "");
+        false -> "+{" ++ to_string_list(L2, false) ++ "}..."
     end.
 
-to_string_list(L) -> to_string_list(L, "").
+to_string_list(L, F) -> to_string_list(L, "", F).
 
-to_string_list([], Str) -> Str;
-to_string_list([H], Str) ->
-    Str ++ "1/" ++ integer_to_list(H);
-to_string_list([H|L], Str) ->
-    to_string_list(L, Str ++ "1/" ++ integer_to_list(H) ++ "+").
+to_string_list([], Str, _) -> Str;
+to_string_list([H], Str, F) ->
+    Str ++ "1/" ++
+    case F of
+        true -> "(";
+        false -> ""
+    end ++
+    integer_to_list(H);
+to_string_list([H|L], Str, F) -> to_string_list(L, Str ++ "1/(" ++ integer_to_list(H) ++ "+", F).
+
+dup(N, Acc) when N < 2 -> Acc;
+dup(N, Acc) -> dup(N-1, Acc ++ ")").
 
 %% -----------------------------------------------------------------------------
 %% @doc Преобразовать конечную цепную дробь в список
