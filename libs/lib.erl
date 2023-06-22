@@ -12,7 +12,7 @@
 -export([gcd/2, sign/1, pow/2, fac/1, mult/2]).
 
 %% Операции над списками
--export([pmap/2, pcall/1, map_all/2, pmap_all/2, depth/1]).
+-export([pmap/2, pcall/1, map_all/2, pmap_all/2, depth/1, qsort/1]).
 
 %% Процессы
 -export([flush/0, on_exit/2, count_msg/1]).
@@ -250,6 +250,18 @@ type_of(X) when is_binary(X)    -> binary.
 depth(X) when not is_list(X) -> 0;
 depth([]) -> 1;
 depth([H|L]) -> max(depth(H)+1, depth(L)).
+
+%% -----------------------------------------------------------------------------
+%% @doc Быстрая сорьтровка списка
+%% @end
+%% -----------------------------------------------------------------------------
+-spec qsort(L) -> Return when
+    L :: List,
+    Return :: List.
+
+qsort([]) -> [];
+qsort([X|Xs]) ->
+    qsort([Y || Y<-Xs, Y=<X]) ++ [X] ++ qsort([Y || Y<-Xs, Y>X]).
 
 %% -----------------------------------------------------------------------------
 %% @doc Применить функцию F к L согласно правила:
