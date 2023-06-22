@@ -256,8 +256,8 @@ depth([H|L]) -> max(depth(H)+1, depth(L)).
 %% @end
 %% -----------------------------------------------------------------------------
 -spec qsort(L) -> Return when
-    L :: List,
-    Return :: List.
+    L :: list,
+    Return :: list.
 
 qsort([]) -> [];
 qsort([X|Xs]) ->
