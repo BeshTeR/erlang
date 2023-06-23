@@ -64,5 +64,6 @@
 [Rebar3](https://www.rebar3.org/)  
 [Hex](https://hex.pm/)  
 [GitHub (erlang)](https://github.com/search?o=desc&q=erlang&s=updated&type=Repositories)  
-[LFE](https://lfe.io/)  
+[LFE](https://lfe.io/) 
+[Elixir](https://elixir-lang.org/) 
 [ZX/Zomp](https://zxq9.com/projects/zomp/index.html)  
