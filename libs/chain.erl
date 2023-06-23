@@ -18,7 +18,7 @@
 -export([depth/1, depth/2, nth/2]).
 
 %% Математические операции
--export([mult/2, division/2, rev/1,  add/2, sub/2]).
+-export([mul/2, division/2, rev/1,  add/2, sub/2]).
 
 %% Логические операции сравнения
 -export([equal/2, less/2, greq/2, under/2]).
@@ -387,12 +387,12 @@ under(C1, C2) ->
 %% @doc Умножение конечных цепных дробей (C1 * C2)
 %% @end
 %% -----------------------------------------------------------------------------
--spec mult(C1, C2) -> Return when
+-spec mul(C1, C2) -> Return when
     C1     :: chain(),
     C2     :: chain(),
     Return :: chain().
 
-mult(C1, C2) -> from_rat(rat:mult(to_rat(C1),to_rat(C2))).
+mul(C1, C2) -> from_rat(rat:mul(to_rat(C1),to_rat(C2))).
 
 %% -----------------------------------------------------------------------------
 %% @doc Деление конечных цепных дробей (C1 / C2)

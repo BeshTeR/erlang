@@ -15,7 +15,7 @@
 -export([zero/0, one/0]).
 
 %% Арифметические операции
--export([mult/2, division/2, rev/1,  add/2, sub/2, pow/2]).
+-export([mul/2, division/2, rev/1,  add/2, sub/2, pow/2]).
 
 %% Предикаты
 -export([is_rational/1, is_zero/1, is_negativ/1, is_positiv/1, is_full/1]).
@@ -145,12 +145,12 @@ rev(R) ->
 %% @doc Умножение рациональных чисел
 %% @end
 %% -----------------------------------------------------------------------------
--spec mult(R1, R2) -> Return when
+-spec mul(R1, R2) -> Return when
     R1     :: rational(),
     R2     :: rational(),
     Return :: rational().
 
-mult(R1, R2) ->
+mul(R1, R2) ->
     make(numerator(R1)*numerator(R2), denominator(R1)*denominator(R2)).
 
 %% -----------------------------------------------------------------------------

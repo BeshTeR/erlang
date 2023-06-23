@@ -7,7 +7,7 @@
 |*zero()*| Ноль|  
 |*one()*| Единица|  
 |*rev(R)*| 1 / R|  
-|*mult(R1, R2)*| R1 * R2|  
+|*mul(R1, R2)*| R1 * R2|  
 |*division(R1, R2)*| R1 / R2|  
 |*add(R1, R2)*| R1 + R2|  
 |*sub(R1, R2)*| R1 - R2 |  
