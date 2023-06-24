@@ -106,21 +106,31 @@ partition([H|T], Acc, X, {S, E, L}) ->
 %% @end
 %% -----------------------------------------------------------------------------
 -spec msort(L) -> Return when
-    L :: [any()],
+    L      :: [any()],
     Return :: [any()].
 
-msort([]) -> [];
-msort([H]) -> [H];
+msort([]) ->
+    [];
+msort([H]) ->
+    [H];
 msort(L) ->
     {L1, L2} = split(L),
     merge(msort(L1), msort(L2)).
 
-split(L) -> split(L, L, []).
-split([], L1, L2) -> {lists:reverse(L2), L1};
-split([_], L1, L2) -> {lists:reverse(L2), L1};
-split([_,_|T1], [H|T2], L) -> split(T1, T2, [H|L]).
+split(L) ->
+    split(L, L, []).
+split([], L1, L2) ->
+    {lists:reverse(L2), L1};
+split([_], L1, L2) ->
+    {lists:reverse(L2), L1};
+split([_,_|T1], [H|T2], L) ->
+    split(T1, T2, [H|L]).
 
-merge([], L) -> L;
-merge(L, []) -> L;
-merge([H1|T1], [H2|T2]) when H1=<H2 -> [H1 | merge(T1, [H2|T2])];
-merge([H1|T1], [H2|T2]) when H1>H2 ->  [H2 | merge([H1|T1], T2)].
+merge([], L) ->
+    L;
+merge(L, []) ->
+    L;
+merge([H1|T1], [H2|T2]) when H1=<H2 ->
+    [H1 | merge(T1, [H2|T2])];
+merge([H1|T1], [H2|T2]) when H1>H2 -> 
+    [H2 | merge([H1|T1], T2)].
