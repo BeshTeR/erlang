@@ -12,7 +12,7 @@
 -export([gcd/2, sign/1, pow/2, fac/1, mul/2]).
 
 %% Операции над списками
--export([pmap/2, pcall/1, map_all/2, pmap_all/2, depth/1, qsort/1, msort/1]).
+-export([pmap/2, pcall/1, map_all/2, pmap_all/2, depth/1]).
 
 %% Процессы
 -export([flush/0, on_exit/2, count_msg/1]).
@@ -250,42 +250,6 @@ type_of(X) when is_binary(X)    -> binary.
 depth(X) when not is_list(X) -> 0;
 depth([]) -> 1;
 depth([H|L]) -> max(depth(H)+1, depth(L)).
-
-%% -----------------------------------------------------------------------------
-%% @doc Быстрая сортировка
-%% @end
-%% -----------------------------------------------------------------------------
--spec qsort(L) -> Return when
-    L :: list,
-    Return :: list.
-
-qsort([]) -> [];
-qsort([H|T]) ->
-    qsort([X || X<-T, X=<H]) ++ [H] ++ qsort([X || X<-T, X>H]).
-
-%% -----------------------------------------------------------------------------
-%% @doc Сортировка слиянием
-%% @end
-%% -----------------------------------------------------------------------------
--spec msort(L) -> Return when
-    L :: list,
-    Return :: list.
-
-msort([]) -> [];
-msort([H]) -> [H];
-msort(L) ->
-    {L1, L2} = split(L),
-    merge(msort(L1), msort(L2)).
-
-split(L) -> split(L, L, []).
-split([], L1, L2) -> {lists:reverse(L2), L1};
-split([_], L1, L2) -> {lists:reverse(L2), L1};
-split([_,_|T1], [H|T2], L) -> split(T1, T2, [H|L]).
-
-merge([], L) -> L;
-merge(L, []) -> L;
-merge([H1|T1], [H2|T2]) when H1=<H2 -> [H1 | merge(T1, [H2|T2])];
-merge([H1|T1], [H2|T2]) when H1>H2 ->  [H2 | merge([H1|T1], T2)].
 
 %% -----------------------------------------------------------------------------
 %% @doc Применить функцию F к L согласно правила:
