@@ -38,7 +38,7 @@
 [Дмитрий Васильев. "Язык программирования Erlang"](http://hlabs.org/development/erlang/)  
 ["Курс по Erlang/OTP на HexLet"](https://www.youtube.com/watch?v=6oVhisTplZA)  
 [Юрий Жлоба. "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
-[Юрий Жлоба. учебный курс по Erlang](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
+[Юрий Жлоба. "Учебный курс по Erlang](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
 [Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
 [Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
 [Борис Бочкарев "Erlang"](https://www.youtube.com/playlist?list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
