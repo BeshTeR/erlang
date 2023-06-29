@@ -27,7 +27,7 @@
 **Документация:**  
 [Официальная документация](https://www.erlang.org/docs)  
 [Альтернативная документация](https://www.erldocs.com/)  
-[Spec-Zone (Erlang/OTP 21.0)](https://spec-zone.ru/erlang~21/)  
+[Spec-Zone](https://spec-zone.ru/erlang/)  
 [Erlang](https://runebook.dev/ru/docs/erlang/-index-)  
 [Шпаргалка по OTP](https://itnan.ru/post.php?c=1&p=346252)  
 
@@ -38,7 +38,7 @@
 [Дмитрий Васильев. "Язык программирования Erlang"](http://hlabs.org/development/erlang/)  
 ["Курс по Erlang/OTP на HexLet"](https://www.youtube.com/watch?v=6oVhisTplZA)  
 [Юрий Жлоба. "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
-[Юрий Жлоба. "Учебный курс по Erlang](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
+[Юрий Жлоба. "Учебный курс по Erlang"](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
 [Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
 [Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
 [Борис Бочкарев "Erlang"](https://www.youtube.com/playlist?list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
