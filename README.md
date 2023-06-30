@@ -27,7 +27,7 @@
 **Документация:**  
 [Официальная документация](https://www.erlang.org/docs)  
 [Альтернативная документация](https://www.erldocs.com/)  
-[Spec-Zone](https://spec-zone.ru/erlang/)  
+[Spec-Zone (Erlang/OTP)](https://spec-zone.ru/erlang/)  
 [Erlang 25 (Русский)](https://runebook.dev/ru/docs/erlang/-index-)  
 [Шпаргалка по OTP](https://itnan.ru/post.php?c=1&p=346252)  
 
