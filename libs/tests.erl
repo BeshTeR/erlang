@@ -69,11 +69,11 @@ run(M) ->
     Return :: float().
 
 tc(M, F, Args, N) when is_integer(N), N > 0 ->
-    timer:start(),
     tc({M, F, Args}, N, 0) / N.
 
 tc(_, 0, Sum) -> Sum;
 tc({M, F, Args}, N, Sum) ->
+    timer:start(),
     {T, _} = timer:tc(M, F, Args),
     tc({M, F, Args}, N-1, Sum+T).
 
