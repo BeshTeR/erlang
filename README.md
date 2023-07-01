@@ -22,9 +22,9 @@
 [Васильев Дмитрий "Язык программирования Erlang", 2012](http://hlabs.org/development/erlang/)  
 
 **Видеокурсы:**  
-["Курс по Erlang/OTP на HexLet"](https://www.youtube.com/watch?v=6oVhisTplZA)  
-[Юрий Жлоба. "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
-[Юрий Жлоба. "Учебный курс по Erlang"](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
+[HexLet "Курс по Erlang/OTP"](https://www.youtube.com/watch?v=6oVhisTplZA)  
+[Юрий Жлоба "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
+[Юрий Жлоба "Учебный курс по Erlang"](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
 [Борис Бочкарев "Erlang"](https://www.youtube.com/playlist?list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
 
 **Различные видео:**  
