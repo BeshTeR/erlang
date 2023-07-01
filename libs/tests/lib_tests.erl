@@ -102,12 +102,6 @@ tests(pcall, 1) ->
     {[[{lib, fac, [5]}, {lib, id, [erlang]}, {lib, pow, [3, 4]}]], [120, erlang, 81]}
     ];
 
-tests(sleep, 1) ->
-    [
-    {[0],  ok},
-    {[10], ok}
-    ];
-
 tests(type_of, 1) ->
     [
     {[true],                                      boolean},

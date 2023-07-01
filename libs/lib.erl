@@ -14,9 +14,6 @@
 %% Операции над списками
 -export([pmap/2, pcall/1, map_all/2, pmap_all/2, depth/1]).
 
-%% Процессы
--export([flush/0, on_exit/2, count_msg/1]).
-
 %% Прочее
 -export([id/1, type_of/1]).
 
@@ -172,51 +169,6 @@ pcall(L) ->
              {Id, Pid, Res} -> {Pid, Res};
              {'EXIT', Pid, Reason} when Reason =/= normal -> {Pid, {error, Reason}}
          end || _ <- lists:seq(1, length(L))])].
-
-%% -----------------------------------------------------------------------------
-%% @doc Очистка очереди сообщений текущего процесса
-%% @end
-%% -----------------------------------------------------------------------------
--spec flush() -> Return when
-    Return :: ok.
-
-flush() ->
-    receive
-        _ -> flush()
-        after 0 -> ok
-    end.
-
-%% -----------------------------------------------------------------------------
-%% @doc Обработчик завершения процесса
-%% Если процесс Pid умирает с причиной Why, то вычисляется функция F(Why)
-%% @end
-%% -----------------------------------------------------------------------------
--spec on_exit(Pid, F) -> Return when
-    Pid    :: pid(),
-    F      :: fun(),
-    Return :: any().
-
-on_exit(Pid, F) ->
-    spawn(
-        fun() ->
-            process_flag(trap_exit, true),
-            link(Pid),
-            receive
-                {'EXIT', Pid, Why} -> F(Why)
-            end
-        end).
-
-%% -----------------------------------------------------------------------------
-%% @doc Количество сообщений в почтовом ящике процесса
-%% @end
-%% -----------------------------------------------------------------------------
--spec count_msg(Pid) -> Return when
-    Pid    :: pid(),
-    Return :: pos_integer().
-
-count_msg(Pid) ->
-    {message_queue_len, Length} = process_info(Pid, message_queue_len),
-    Length.
 
 %% -----------------------------------------------------------------------------
 %% @doc Тип аргумента
