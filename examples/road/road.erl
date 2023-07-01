@@ -1,6 +1,15 @@
+%%% ----------------------------------------------------------------------------
+%%% @doc Поиск оптимального маршрута
+%%% 
+%%% Заруск из командной строки: .\road
+%%% Запуск из BEAM: main("poem.txt").
+%%% 
+%%% @end
+%%% ----------------------------------------------------------------------------
 -module(road).
 -export([main/1]).
 
+%% Точка входа в программу
 main(FileName) ->
     {ok, Bin} = file:read_file(FileName),
     Map = parse_map(Bin),
@@ -14,12 +23,13 @@ parse_map(Str) when is_list(Str) ->
     Values = [list_to_integer(X) || X <- string:tokens(Str, "\r\n\t ")],
     group_vals(Values, []).
 
+%% Группируем исходные данные
 group_vals([], Acc) ->
     lists:reverse(Acc);
 group_vals([A, B, X | Rest], Acc) ->
     group_vals(Rest, [{A, B, X} | Acc]).
 
-%% Выбираем лучший путь
+%% Выбираем лучший маршрут
 optimal_path(Map) ->
     {A, B} = lists:foldl(fun shortest_step/2, {{0, []}, {0, []}}, Map),
     {_Dist, Path} = 

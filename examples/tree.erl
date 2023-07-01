@@ -1,6 +1,12 @@
+%%% ----------------------------------------------------------------------------
+%%% @doc Бинарное дерево
+%%% @end
+%%% ----------------------------------------------------------------------------
+
 -module(tree).
 -export([empty/0, insert/3, lookup/2, has_value/2]).
 
+%% Пустое дерево
 empty() -> 
     {node, nil}.
 
@@ -13,6 +19,7 @@ insert(Key, Val, {node, K, V, L, R}) when Key < K ->
 insert(Key, Val, {node, K, V, L, R}) when Key > K ->
     {node, K, V, L, insert(Key, Val, R)}.
 
+%% Поиск по ключу
 lookup(_, {node, nil}) ->
     undefined;
 lookup(Key, {node, Key, Val, _, _}) ->
@@ -22,6 +29,7 @@ lookup(Key, {node, K, _, L, _}) when Key < K ->
 lookup(Key, {node, _, _, _, R}) ->
     lookup(Key, R).
 
+%% Значение содержится в дереве?
 has_value(Val, Tree) ->
     try has_value({Val, Tree}) of
         false -> false
