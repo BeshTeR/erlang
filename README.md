@@ -22,15 +22,22 @@
 [Васильев Дмитрий "Язык программирования Erlang", 2012](http://hlabs.org/development/erlang/)  
 
 **Видеокурсы:**  
-[HexLet "Курс по Erlang/OTP"](https://www.youtube.com/watch?v=6oVhisTplZA)  
-[Юрий Жлоба "Erlang на практике"](https://ru.hexlet.io/courses/erlang_101)  
-[Юрий Жлоба "Учебный курс по Erlang"](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
-[Борис Бочкарев "Erlang"](https://www.youtube.com/playlist?list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
+[HexLet "Курс по Erlang/OTP", 2014](https://www.youtube.com/watch?v=6oVhisTplZA)  
+[Юрий Жлоба "Erlang на практике", 2022](https://ru.hexlet.io/courses/erlang_101)  
+[Юрий Жлоба "Учебный курс по Erlang", 2022](https://www.youtube.com/playlist?list=PLYuTgpYrBrVIc3NddS_2w7e6OwgbMGjNR)  
+[Борис Бочкарев (BeTry) "Erlang", 2021](https://www.youtube.com/playlist?list=PLOjc9X-vV0SH45CCKZsRsm5b_JO-w24Jz)  
+[Psyfactor Photon "Введение в программирование на Erlang", 2013](https://www.youtube.com/playlist?list=PLyKEegf7mKMBwH1yn9UkFQ4u0ss1mI5M_)  
 
 **Различные видео:**  
-[Максим Лапшин "Введение в Erlang"](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
-[Максим Лапшин "Erlang в продакшн"](https://www.youtube.com/watch?v=zefdqQV74R0)  
-[Евгений Батогин "Введение в платформу Erlang/OTP и Elixir"](https://www.youtube.com/watch?v=MF8E3ij3IRI)  
+[Максим Лапшин "Введение в Erlang", 2014](https://www.youtube.com/watch?v=jYrHjS8Z_XU)  
+[Максим Лапшин (FPConf 15/08/2015) "Erlang в продакшн", 2015](https://www.youtube.com/watch?v=zefdqQV74R0)  
+[Максим Лапшин (Podlodka #265) "Erlang", 2022](https://www.youtube.com/watch?v=MPUxk_6CMoA)  
+[Юрий Жлоба (IT_Share. GameDev Web) "Опыт использования Erlang", 2013](https://www.youtube.com/watch?v=LscdVp7wgqQ)  
+[Юрий Жлоба  (TvZavr.ru) "Чем хорош Erlang вообще и для веб-разработки в частности?", 2014](https://www.youtube.com/watch?v=Nt3UjQ7pKvg)  
+[Евгений Батогин (ФИТ.Университет) "Введение в платформу Erlang/OTP и Elixir", 2019](https://www.youtube.com/watch?v=MF8E3ij3IRI)  
+[ErlangDnipro 2014](https://www.youtube.com/playlist?list=PLLixtMuy_dAgIp-7Yeq8cjpTUXhtkn4gL)  
+[ErlangDnipro 2015](https://www.youtube.com/playlist?list=PLLixtMuy_dAgjoGrD0zFkVDcDlftISWbK)  
+[Belarus Erlang User Group, 2014-2015](https://www.youtube.com/playlist?list=PLYuTgpYrBrVLVIFq5qVWh-CBILw3qIyeP)  
 [Сборник "Erlang Russia"](https://www.youtube.com/playlist?list=PLej8-Q0wVPg2tcCCnPE7qtd5azxDuezWF)  
 
 **Форумы:**  
