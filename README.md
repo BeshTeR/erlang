@@ -31,7 +31,7 @@
 **Различные видео:**  
 [Максим Лапшин (FPConf 2014) "Введение в Erlang", 2014](https://www.youtube.com/watch?v=Z8B8eOc3BAI&list=PLY3spNmwoSY8RS7Q4HxNylBMcGSdTnxa6&index=3)  
 [Максим Лапшин (FPConf 2015) "Erlang в продакшн", 2015](https://www.youtube.com/watch?v=zefdqQV74R0)  
-[Алексей Никитин (FPConf 2015) "Вся правдв об Erlang", 2016](https://www.youtube.com/watch?v=kHxNgiKGuF8&list=PLY3spNmwoSY-oNRvjL63BMqCk2qwLE4GF&index=3)  
+[Алексей Никитин (FPConf 2015) "Вся правда об Erlang", 2016](https://www.youtube.com/watch?v=kHxNgiKGuF8&list=PLY3spNmwoSY-oNRvjL63BMqCk2qwLE4GF&index=3)  
 [Максим Лапшин (Podlodka #265) "Erlang", 2022](https://www.youtube.com/watch?v=MPUxk_6CMoA)  
 [Юрий Жлоба (IT_Share. GameDev Web) "Опыт использования Erlang", 2013](https://www.youtube.com/watch?v=LscdVp7wgqQ)  
 [Юрий Жлоба  (TvZavr.ru) "Чем хорош Erlang вообще и для веб-разработки в частности?", 2014](https://www.youtube.com/watch?v=Nt3UjQ7pKvg)  
